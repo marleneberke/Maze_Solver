@@ -2,8 +2,8 @@ using Gen
 
 @gen function fun()
     heads = []
+    prob = @trace(uniform(0, 1), :prob)
     for i = 1:10
-        prob = @trace(uniform(0, 1), (:prob, i))
         head = @trace(categorical([prob, 1-prob]), (:head, i))
         push!(heads, head)
     end
