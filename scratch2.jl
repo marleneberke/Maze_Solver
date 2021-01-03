@@ -3,7 +3,8 @@ using Gen
 @gen function fun()
     heads = []
     for i = 1:10
-        prob = @trace(uniform(0, 1), (:prob, i))
+        #prob = @trace(uniform(0, 1), (:prob, i))
+        prob = 0.7
         head = @trace(categorical([prob, 1-prob]), (:head, i))
         push!(heads, head)
     end
