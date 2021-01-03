@@ -10,16 +10,6 @@ using Gen
     return heads
 end
 
-# @gen function call_fun()
-#     heads = []
-#     for i = 1:10
-#         head = @trace(fun(), (:move, i))
-#         push!(heads, head)
-#     end
-#     return heads
-# end
-
-
 trace,_ = Gen.generate(fun, ())
 choices = Gen.get_choices(trace)
 heads = Gen.get_retval(trace)
@@ -43,4 +33,4 @@ end;
 
 pf_traces = particle_filter(100, heads, 100);
 
-inferred_heads = Gen.get_retval(pf_traces);
+Gen.get_retval(pf_traces);
