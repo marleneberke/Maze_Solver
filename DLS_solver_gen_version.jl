@@ -1,22 +1,24 @@
-#This version does a DLS at intersections and picks the best path based on heuristic
+#This version does a DLS after every move and probabilistically picks the next move
 
 using Random
 using StatsBase
+using Gen
 
 include("maze_generator.jl")
 include("helper_functions.jl")
 
 #################################################################################
-function go(goal_node::Node, start_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate})
+@gen function go(goal_node::Node, start_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate})
     current_node = start_node
+    k = 0; #k if for indexing  how many time find_best gets called
     while current_node != goal_node
-        next_node, node_matrix, way_so_far = move(current_node, node_matrix, way_so_far)
+        next_node, node_matrix, way_so_far = move(current_node, node_matrix, way_so_far, k)
         current_node = next_node
     end
     return way_so_far
 end
 
-function move(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate})
+@gen function move(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate}, k)
     if length(current_node.viable_children)==0 #back all the way up to the last node that had a viable child
         current_node, way_so_far = backtrack(current_node.location, node_matrix, way_so_far); #now current node will definitely have a viable child
     end
@@ -28,7 +30,8 @@ function move(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{C
         update(current_node, next_node)
         push!(way_so_far, next_node_coor)
     else #choose best option. if after search, options are bad, backtrack
-        next_node, way_so_far = find_best(current_node, node_matrix, way_so_far)
+        next_node, way_so_far = @trace(find_best(current_node, node_matrix, way_so_far), (:find_best, k))
+        k = k + 1;
     end
 
     return next_node, node_matrix, way_so_far
@@ -36,10 +39,14 @@ end
 
 #find the best way to go from a node. if it's a dead end, backtrack
 #returns the next node
-function find_best(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate})
+@gen function find_best(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate})
     #evaluations will heuristic's the values for each path
     candidates = current_node.viable_children;
     evaluations = Array{Float64, 1}(undef, length(candidates))
+
+    lambda = 5
+    depth_limit = @trace(poisson(lambda), (:depth_limit))
+
     for i = 1:length(candidates)
         #candidate_node = node_matrix[candidates[i].x, candidates[i].y]
         #give DLS a fake copy of the node_matrix and all the nodes. don't actually want the node_matrix changed.
@@ -48,7 +55,9 @@ function find_best(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Ar
         parent_node = dpcpy_matrix[current_node.location.x, current_node.location.y]
         update(candidate_node, parent_node)
         #evaluations[i] = DLS_wrapper(candidate_node, dpcpy_matrix, 1)
-        evaluations[i] = DLS(candidate_node, dpcpy_matrix, 7)
+        # lambda = 5
+        # depth_limit = @trace(poisson(lambda), (:depth_limit))
+        evaluations[i] = DLS(candidate_node, dpcpy_matrix, depth_limit)
     end
     val, index = findmin(evaluations)
     #if all deadends
