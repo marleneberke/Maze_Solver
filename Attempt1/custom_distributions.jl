@@ -14,7 +14,7 @@ function Gen.random(::LocationDistribution, x::Int64, y::Int64)
 end
 
 function Gen.logpdf(::LocationDistribution, location::Coordinate, x::Int64, y::Int64)
-    (location.x==x && location.y==y) ? 0 : -Inf
+    (location.x==x && location.y==y) ? 0.0 : -Inf
 end
 
 function Gen.logpdf_grad(::LocationDistribution, location::Coordinate, x::Int64, y::Int64)
