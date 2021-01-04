@@ -1,5 +1,5 @@
 struct State
-    current_node::Node
+    current_location::Coordinate
     current_node_matrix::Matrix{Node}
 end
 
@@ -7,19 +7,19 @@ end
 @gen function kernel(t::Int64, prev_state::State)
     #really simple test
 
-    current_node = prev_state.current_node
+    current_location = prev_state.current_location
     current_node_matrix = prev_state.current_node_matrix
 
     #if you've already hit the goal
-    if current_node == goal_node
-        next_node = current_node
+    if current_location == goal_location
+        next_location = current_location
     else #conduct a search with addressed randomness
         x = @trace(uniform_discrete(1, w), :x)
         y = @trace(uniform_discrete(1, h), :y)
-        next_node = current_node_matrix[x, y]
+        next_location = current_node_matrix[x, y].location
     end
 
-    next_state = State(next_node, current_node_matrix)
+    next_state = State(next_location, current_node_matrix)
 
     return next_state
 end
@@ -31,7 +31,7 @@ Gen.load_generated_functions()
     #set parameters and such
 
     # record initial state
-    init_state = State(start_node, node_matrix)
+    init_state = State(start_location, node_matrix)
 
     # run `chain` function under address namespace `:chain`, producing a vector of states
     states = @trace(chain(T, init_state), :chain)

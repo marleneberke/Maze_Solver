@@ -22,8 +22,8 @@ for x = 1:h
     end
 end
 
-goal_node = node_matrix[h, w]
-start_node = node_matrix[1, 1]
+goal_location = node_matrix[h, w].location
+start_location = node_matrix[1, 1].location
 
 #################################################################################
 T = 500
@@ -32,7 +32,7 @@ T = 500
 choices = get_choices(trace)
 retval = get_retval(trace)
 
-println(retval[1].current_node.location) #initial starting point
+println(retval[1].current_location) #initial starting point
 for t = 2:T
-    println(retval[2][t].current_node.location)
+    println(retval[2][t].current_location)
 end
