@@ -1,3 +1,5 @@
+include("custom_distributions.jl")
+
 struct State
     current_location::Coordinate
     current_node_matrix::Matrix{Node}
@@ -10,14 +12,14 @@ end
     current_location = prev_state.current_location
     current_node_matrix = prev_state.current_node_matrix
 
-    #if you've already hit the goal
-    if current_location == goal_location
-        next_location = current_location
-    else #conduct a search with addressed randomness
-        x = @trace(uniform_discrete(1, w), :x)
-        y = @trace(uniform_discrete(1, h), :y)
-        next_location = current_node_matrix[x, y].location
-    end
+    #conduct a search with addressed randomness
+    x = @trace(uniform_discrete(1, w), :x)
+    y = @trace(uniform_discrete(1, h), :y)
+
+    println(typeof(x))
+
+    next_location = @trace(location_distribution(x, y), :next_location)
+    #next_location = current_node_matrix[x, y].location
 
     next_state = State(next_location, current_node_matrix)
 

@@ -26,7 +26,7 @@ goal_location = node_matrix[h, w].location
 start_location = node_matrix[1, 1].location
 
 #################################################################################
-T = 500
+T = 100
 (trace, _) = Gen.generate(unfold_model, (T,))
 
 choices = get_choices(trace)
@@ -36,3 +36,5 @@ println(retval[1].current_location) #initial starting point
 for t = 2:T
     println(retval[2][t].current_location)
 end
+
+#see if I can infer x and y from deterministic thing
