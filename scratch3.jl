@@ -4,7 +4,7 @@ using Gen
     heads = []
     prob = @trace(uniform(0, 1), :prob)
     for i = 1:T
-        head = @trace(categorical([prob, 1-prob]), (:head, i))
+        head = @trace(categorical([1.0, 0.0]), (:head, i))
         push!(heads, head)
     end
     return heads
