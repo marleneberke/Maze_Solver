@@ -26,7 +26,7 @@ goal_node = node_matrix[h, w]
 start_node = node_matrix[1, 1]
 
 #################################################################################
-T = 4
+T = 500
 (trace, _) = Gen.generate(unfold_model, (T,))
 
 choices = get_choices(trace)

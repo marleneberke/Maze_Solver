@@ -10,11 +10,13 @@ end
     current_node = prev_state.current_node
     current_node_matrix = prev_state.current_node_matrix
 
-    #just go down from prev_node until hitting end of maze
-    if current_node.location.y < w
-        next_node = current_node_matrix[current_node.location.x, current_node.location.y+1]
-    else
+    #if you've already hit the goal
+    if current_node == goal_node
         next_node = current_node
+    else #conduct a search with addressed randomness
+        x = @trace(uniform_discrete(1, w), :x)
+        y = @trace(uniform_discrete(1, h), :y)
+        next_node = current_node_matrix[x, y]
     end
 
     next_state = State(next_node, current_node_matrix)
