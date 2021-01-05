@@ -18,7 +18,7 @@ printmaze(m);
 
 
 #################################################################################
-T = 5
+T = 50
 (trace, _) = Gen.generate(unfold_model, (T,));
 
 choices = get_choices(trace)
@@ -26,11 +26,11 @@ retval = get_retval(trace)
 
 locations = Array{Coordinate}(undef, T)
 locations[1] = retval[1].current_location #init
-#println(retval[1].current_location) #initial starting point
 for t = 2:T
-    #println(retval[2][t].current_location)
     locations[t] = retval[2][t].current_location
 end
+
+println(locations)
 
 # #see if I can infer x and y from deterministic thing
 unfold_pf_traces = unfold_particle_filter(10, locations, 10)
@@ -39,6 +39,6 @@ unfold_pf_traces = unfold_particle_filter(10, locations, 10)
 # #how to access values in the traces from the particle filter.
 # for i = 1:num_particles
 #     for t = 1:T
-#         unfold_pf_traces[i][:chain => t => :x]
+#         unfold_pf_traces[i][:chain => t => :next_location]
 #     end
 # end

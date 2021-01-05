@@ -78,7 +78,6 @@ function find_best(max_depth::Int64, current_node::Node, node_matrix::Matrix{Nod
         update(current_node, next_node)
         push!(way_so_far, next_node_coor)
     end
-    println("next_node ", next_node)
     return next_node, way_so_far
 end
 

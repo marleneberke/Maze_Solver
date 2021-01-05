@@ -4,12 +4,12 @@ function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,
 
     for t=2:length(locations)
         println(t)
-        maybe_resample!(state, ess_threshold=num_particles/2)
+        maybe_resample!(state, ess_threshold=num_particles)#used to be /2. now always resampling becasue I want to get rid of -Inf before they become NANs
         obs = Gen.choicemap((:chain => t => :next_location, locations[t]))
         Gen.particle_filter_step!(state, (t,), (UnknownChange(),), obs)
-        # for i = 1:num_particles
-        #     println(state.log_weights[i])
-        # end
+        for i = 1:num_particles
+            println(state.log_weights[i])
+        end
     end
 
     # return a sample of traces from the weighted collection:

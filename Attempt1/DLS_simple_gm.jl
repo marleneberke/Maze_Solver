@@ -9,33 +9,28 @@ end
 
 #describes how to get from one state to the next
 @gen function kernel(t::Int64, prev_state::State)
-    println("t ", t)
     #really simple test
-    #println("prev_state kernel ", prev_state)
 
     current_location = prev_state.current_location
-    println("current_location kernel ", current_location)
     current_node_matrix = prev_state.current_node_matrix
     current_node = current_node_matrix[current_location.x, current_location.y]
     way_so_far = prev_state.way_so_far
 
-    max_depth = @trace(poisson(10), :max_depth)
-    #find the next move
-    next_node, way_so_far = find_best(max_depth, current_node, current_node_matrix, way_so_far)
-    println("next_node in kernel ", next_node)
+    if current_location !== goal_location
+        max_depth = @trace(poisson(10), :max_depth)
+        #find the next move
+        next_node, way_so_far = find_best(max_depth, current_node, current_node_matrix, way_so_far)
+    else #so if we're at the goal location, jsut stay there
+        next_node = current_node
+    end
 
     x = next_node.location.x
     y = next_node.location.y
 
-    println("x ", x)
-    println("y ", y)
     next_location = @trace(location_distribution(x, y), :next_location)
     #next_location = current_node_matrix[x, y].location
 
-
-    println("next_location ", next_location)
     next_state = State(next_location, current_node_matrix, way_so_far)
-    #println("next_state ", next_state)
 
     return next_state
 end
@@ -63,8 +58,6 @@ Gen.load_generated_functions()
 
     # run `chain` function under address namespace `:chain`, producing a vector of states
     states = @trace(chain(T, init_state), :chain)
-
-    println("here")
 
     result = (init_state, states)
     return result
