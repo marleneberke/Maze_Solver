@@ -8,7 +8,7 @@ struct State
 end
 
 #describes how to get from one state to the next
-@gen function kernel(t::Int64, prev_state::State)
+@gen function kernel(t::Int64, prev_state::State, speed_of_thought_factor::Float64)
     #really simple test
 
     current_location = prev_state.current_location
@@ -19,8 +19,11 @@ end
     if current_location !== goal_location
         max_depth = @trace(poisson(10), :max_depth)
         #find the next move
-        next_node, way_so_far = find_best(max_depth, current_node, current_node_matrix, way_so_far)
-    else #so if we're at the goal location, jsut stay there
+        next_node, way_so_far = @trace(find_best(max_depth, current_node, current_node_matrix, way_so_far, speed_of_thought_factor), :find_best)
+    else #so if we're at the goal location, just stay there
+        #give a negative time to fill the index
+        @trace(uniform(-1.0, 0.0), (:find_best => :computation_time))
+        @trace(bernoulli(1.0), (:find_best => :distracted))
         next_node = current_node
     end
 
@@ -48,16 +51,16 @@ Gen.load_generated_functions()
         end
     end
 
-    goal_location = node_matrix[h, w].location
     start_location = node_matrix[1, 1].location
     way_so_far = Coordinate[]
 
+    speed_of_thought_factor = @trace(uniform(0, 1), :speed_of_thought_factor)
 
     # record initial state
     init_state = State(start_location, node_matrix, way_so_far)
 
     # run `chain` function under address namespace `:chain`, producing a vector of states
-    states = @trace(chain(T, init_state), :chain)
+    states = @trace(chain(T, init_state, speed_of_thought_factor), :chain)
 
     result = (init_state, states)
     return result

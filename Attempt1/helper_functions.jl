@@ -44,13 +44,14 @@ end
 
 #find the best way to go from a node. if it's a dead end, backtrack
 #returns the next node
-function find_best(max_depth::Int64, current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate})
+@gen function find_best(max_depth::Int64, current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate}, speed_of_thought_factor::Float64)
     #println("current_node ", current_node)
     candidates = current_node.viable_children;
     #evaluations will heuristic's the values for each path
     evaluations = Array{Float64, 1}(undef, length(candidates))
+    #counter for number of times DLS is called. it's value will be related to max_depth
+    global counter = 0.0;
     for i = 1:length(candidates)
-        #candidate_node = node_matrix[candidates[i].x, candidates[i].y]
         #give DLS a fake copy of the node_matrix and all the nodes. don't actually want the node_matrix changed.
         dpcpy_matrix = deepcopy(node_matrix)
         candidate_node = dpcpy_matrix[candidates[i].x, candidates[i].y]
@@ -59,8 +60,14 @@ function find_best(max_depth::Int64, current_node::Node, node_matrix::Matrix{Nod
         #evaluations[i] = DLS_wrapper(candidate_node, dpcpy_matrix, 1)
         evaluations[i] = DLS(candidate_node, dpcpy_matrix, max_depth)
     end
-    #println("candidates ", candidates)
-    #println("evaluations ", evaluations)
+    ############################################################################
+    #computation stuff
+    #computation time has mean counter, sd 5, min 0, max 100
+    distracted = @trace(bernoulli(0.2), :distracted)
+    #distraction adds, on average, 100 to computation time. also increases sd
+    sd = 1.0
+    computation_time = @trace(trunc_normal(speed_of_thought_factor*counter + distracted*100, sd + distracted*10, 0.0, 100.0), :computation_time)
+    ############################################################################
     val, index = findmin(evaluations)
     #if all deadends
     if val == Inf
@@ -83,6 +90,7 @@ end
 
 #implements a DLS that returns the best value possible from a given starting point
 function DLS(current_node::Node, node_matrix::Matrix{Node}, depth::Int64)
+    global counter = counter + 1;
     if current_node.location == goal_location
         return 0 #goal found
     end
