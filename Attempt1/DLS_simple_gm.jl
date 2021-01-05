@@ -16,8 +16,6 @@ end
     x = @trace(uniform_discrete(1, w), :x)
     y = @trace(uniform_discrete(1, h), :y)
 
-    println(typeof(x))
-
     next_location = @trace(location_distribution(x, y), :next_location)
     #next_location = current_node_matrix[x, y].location
 
