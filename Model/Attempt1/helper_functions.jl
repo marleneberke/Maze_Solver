@@ -44,13 +44,20 @@ end
 
 #find the best way to go from a node. if it's a dead end, backtrack
 #returns the next node
-@gen function find_best(max_depth::Int64, current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate}, speed_of_thought_factor::Float64)
+@gen function find_best(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate}, speed_of_thought_factor::Float64)
     #println("current_node ", current_node)
     candidates = current_node.viable_children;
     #evaluations will heuristic's the values for each path
     evaluations = Array{Float64, 1}(undef, length(candidates))
     #counter for number of times DLS is called. it's value will be related to max_depth
     global counter = 0.0;
+    #if at intersection, have higher max_depth that if not at intersection
+    if length(candidates) > 1
+        max_depth = @trace(uniform_discrete(20,20), :max_depth)
+    else
+        max_depth = @trace(uniform_discrete(2,2), :max_depth)
+    end
+
     for i = 1:length(candidates)
         #give DLS a fake copy of the node_matrix and all the nodes. don't actually want the node_matrix changed.
         dpcpy_matrix = deepcopy(node_matrix)

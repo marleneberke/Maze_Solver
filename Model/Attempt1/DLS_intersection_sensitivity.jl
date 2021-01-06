@@ -1,4 +1,4 @@
-#In this version, at each step, performs a DLS
+#In this version, performs a short DLS at each step, and a long DLS at intersections
 
 include("custom_distributions.jl")
 include("helper_functions.jl")
@@ -19,9 +19,8 @@ end
     way_so_far = prev_state.way_so_far
 
     if current_location !== goal_location
-        max_depth = @trace(uniform_discrete(10,10), :max_depth)
         #find the next move
-        next_node, way_so_far = @trace(find_best(max_depth, current_node, current_node_matrix, way_so_far, speed_of_thought_factor), :find_best)
+        next_node, way_so_far = @trace(find_best(current_node, current_node_matrix, way_so_far, speed_of_thought_factor), :find_best)
     else #so if we're at the goal location, just stay there
         #give a negative time to fill the index
         @trace(uniform(-1.0, 0.0), (:find_best => :movement_time))
@@ -56,7 +55,7 @@ Gen.load_generated_functions()
     start_location = node_matrix[1, 1].location
     way_so_far = Coordinate[]
 
-    speed_of_thought_factor = @trace(uniform(0.9, 1.1), :speed_of_thought_factor)
+    speed_of_thought_factor = @trace(uniform(5, 6), :speed_of_thought_factor)
 
     # record initial state
     init_state = State(start_location, node_matrix, way_so_far)

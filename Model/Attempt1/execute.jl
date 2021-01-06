@@ -3,7 +3,7 @@ using Distributions
 
 include("../maze_generator.jl")
 include("helper_functions.jl")
-include("DLS_simple_gm.jl")
+include("DLS_intersection_sensitivity.jl")
 #include("old_DLS_simple.jl")
 include("inference.jl")
 
