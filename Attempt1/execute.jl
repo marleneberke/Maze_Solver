@@ -29,34 +29,44 @@ way_so_far = Coordinate[]
 goal_location = node_matrix[h, w].location
 
 #################################################################################
-T = 50
+T = 30
 (trace, _) = Gen.generate(unfold_model, (T,));
 
 choices = get_choices(trace)
 retval = get_retval(trace)
 
 locations = Array{Coordinate}(undef, T)
-locations[1] = retval[1].current_location #init
+locations[1] = retval[1].current_location #starting value
 for t = 2:T
     locations[t] = retval[2][t].current_location
 end
 
 println(locations)
 
+locations = Array{Coordinate}(undef, T)
 computation_times = Array{Float64}(undef, T)
+distracted = Array{Float64}(undef, T)
 for t = 1:T
+    locations[t] = trace[:chain => t => :next_location]
     computation_times[t] = trace[:chain => t => :find_best => :computation_time]
+    distracted[t] = trace[:chain => t => :find_best => :distracted]
 end
+println(locations) #doesn't have starting value
 println(computation_times)
+println(distracted)
 
 
 # #see if I can infer x and y from deterministic thing
-unfold_pf_traces = unfold_particle_filter(10, locations, computation_times, 10)
+num_particles = 100
+unfold_pf_traces = unfold_particle_filter(num_particles, locations, computation_times, num_particles)
 #
 #
-# #how to access values in the traces from the particle filter.
-# for i = 1:num_particles
-#     for t = 1:T
-#         unfold_pf_traces[i][:chain => t => :next_location]
-#     end
-# end
+#how to access values in the traces from the particle filter.
+inferred_distracted = zeros(T)
+for i = 1:num_particles
+    for t = 1:T
+        inferred_distracted[t] = inferred_distracted[t] + unfold_pf_traces[i][:chain => t => :find_best => :distracted]
+    end
+end
+inferred_distracted = inferred_distracted./num_particles
+MSE = sum((distracted .- inferred_distracted).^2)
