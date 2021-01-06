@@ -1,6 +1,6 @@
-function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,1}, computation_times::Array{Float64,1}, num_samples::Int)
+function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,1}, movement_times::Array{Float64,1}, num_samples::Int)
     #init_obs = Gen.choicemap((:chain => 1 => :next_location, locations[1]))
-    #init_obs[:chain => 1 => :find_best => :computation_time] = computation_times[1] #and computation times
+    #init_obs[:chain => 1 => :find_best => :movement_time] = movement_times[1] #and movement times
     init_obs = Gen.choicemap()
     state = Gen.initialize_particle_filter(unfold_model, (0,), init_obs, num_particles)
     for i = 1:num_particles
@@ -13,7 +13,7 @@ function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,
         println("ess ", ess)
         maybe_resample!(state, ess_threshold=num_particles)#used to be /2. now always resampling becasue I want to get rid of -Inf before they become NANs
         obs = Gen.choicemap((:chain => t => :next_location, locations[t])) #put the location
-        obs[:chain => t => :find_best => :computation_time] = computation_times[t] #and computation times
+        obs[:chain => t => :find_best => :movement_time] = movement_times[t] #and movement times
         Gen.particle_filter_step!(state, (t,), (UnknownChange(),), obs)
         for i = 1:num_particles
             println(state.log_weights[i])

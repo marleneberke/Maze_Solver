@@ -9,11 +9,13 @@ include("inference.jl")
 
 #################################################################################
 
-Random.seed!(2);
+Random.seed!(1);
 h = 10
 w = 10
 m = maze(h,w);
 printmaze(m);
+
+Random.seed!(1);
 
 #################################################################################
 node_matrix = Matrix{Node}(undef, h, w)
@@ -44,21 +46,21 @@ end
 println(locations)
 
 locations = Array{Coordinate}(undef, T)
-computation_times = Array{Float64}(undef, T)
+movement_times = Array{Float64}(undef, T)
 distracted = Array{Float64}(undef, T)
 for t = 1:T
     locations[t] = trace[:chain => t => :next_location]
-    computation_times[t] = trace[:chain => t => :find_best => :computation_time]
+    movement_times[t] = trace[:chain => t => :find_best => :movement_time]
     distracted[t] = trace[:chain => t => :find_best => :distracted]
 end
 println(locations) #doesn't have starting value
-println(computation_times)
+println(movement_times)
 println(distracted)
 
 
 # #see if I can infer x and y from deterministic thing
 num_particles = 100
-unfold_pf_traces = unfold_particle_filter(num_particles, locations, computation_times, num_particles)
+unfold_pf_traces = unfold_particle_filter(num_particles, locations, movement_times, num_particles)
 #
 #
 #how to access values in the traces from the particle filter.
@@ -77,9 +79,10 @@ MSE = sum((distracted .- inferred_distracted).^2)
 outfile = "path.txt"
 file = open(outfile, "w")
 
+println(file, 0.0) #delay before drawing first
 println(file, start_location)
 for i = 1:length(locations)
-    println(file, computation_times[i])
+    println(file, movement_times[i])
     println(file, locations[i])
 end
 

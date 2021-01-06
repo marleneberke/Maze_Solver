@@ -63,10 +63,11 @@ end
     ############################################################################
     #computation stuff
     #computation time has mean counter, sd 5, min 0, max 100
-    distracted = @trace(bernoulli(0.2), :distracted)
+    distracted = @trace(bernoulli(0.05), :distracted)
     #distraction adds, on average, 100 to computation time. also increases sd
-    sd = 1.0
-    computation_time = @trace(trunc_normal(speed_of_thought_factor*counter + distracted*100, sd + distracted*10, 0.0, 100.0), :computation_time)
+    sd = 0.1
+    computation_time = @trace(trunc_normal(speed_of_thought_factor*counter + distracted*300, sd + distracted*10, 0.0, 100000.0), :computation_time)
+    movement_time = @trace(trunc_normal(maximum([computation_time, 10.0]), sd, 0.0, 100000.0), :movement_time)
     ############################################################################
     val, index = findmin(evaluations)
     #if all deadends
