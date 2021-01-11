@@ -15,7 +15,6 @@ end
     time_since_last_thought = state.time_since_last_thought
     path_to_goal = state.path_to_goal
 
-
     #if at the goal location, just return the goal location
     if current_location==goal_location
         return State(current_location, search_tree, distracted, time_since_last_move, time_since_last_thought, path_to_goal)
@@ -29,10 +28,17 @@ end
     end
 
     #this is all an else
-    frontier = get_downstream_frontier(current_location, search_tree[current_location.x, current_location.y].parent, search_tree)
 
     #if enough time has passed since last thought and tree is small enough and goal has not previously been found, expand search tree
     if (time_since_last_thought >= time_per_thought) && (size_of_downstream_tree(current_location, search_tree) < max_tree_size) && isempty(path_to_goal)
+        #if frontier is empty and there's no path to a goal, means this is a dead end. in that case, keeping starting search from parent node until you find new frontier
+        current_location_to_search_from = current_location
+        frontier = get_downstream_frontier(current_location_to_search_from, search_tree[current_location_to_search_from.x, current_location_to_search_from.y].parent, search_tree)
+        while isempty(frontier)
+            current_location_to_search_from = search_tree[current_location_to_search_from.x,current_location_to_search_from.y].parent
+            frontier = get_downstream_frontier(current_location_to_search_from, search_tree[current_location_to_search_from.x, current_location_to_search_from.y].parent, search_tree)
+        end
+
         #pick the next node to add randomly
         to_add = sample(frontier) #may want to trace this later. to_add should be a tree node
         search_tree = add_to_search_tree(to_add, search_tree)
@@ -53,9 +59,6 @@ end
         if !isempty(path_to_goal) #if goal found, move toward it
             current_location = pop!(path_to_goal)
             moved = true
-        elseif size_of_downstream_tree(current_location, search_tree) >= max_tree_size #if search tree is too big, move based on heuristic
-            current_location = find_best_move(current_location, goal_location, search_tree)
-            moved = true
         #if just one possible move, take it
         elseif length(search_tree[current_location.x, current_location.y].children) == 1
             current_location = search_tree[current_location.x, current_location.y].children[1]
@@ -63,6 +66,9 @@ end
         #deadend, go back to parent
         elseif length(search_tree[current_location.x, current_location.y].children) < 1
             current_location = search_tree[current_location.x, current_location.y].parent
+            moved = true
+        elseif size_of_downstream_tree(current_location, search_tree) >= max_tree_size #if search tree is too big, move based on heuristic
+            current_location = find_best_move(current_location, goal_location, search_tree)
             moved = true
         end
     end
@@ -84,7 +90,7 @@ Gen.load_generated_functions()
     #set parameters and such
     time_per_thought = @trace(uniform_discrete(2, 2), :time_per_thought)
     time_per_move = @trace(uniform_discrete(5, 5), :time_per_move)
-    max_tree_size = @trace(uniform_discrete(20, 20), :max_tree_size)
+    max_tree_size = @trace(uniform_discrete(15, 15), :max_tree_size)
 
     tree = Matrix{Union{TreeNode, Missing}}(missing, h, w)
     start_node = TreeNode(start_location, start_location, node_matrix[start.location.x, start.location.y].neighbors)#location, parents, children

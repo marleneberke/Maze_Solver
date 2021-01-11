@@ -47,7 +47,7 @@ end
 
 #count up the number of non-missing entries downstream from current location, including current location. recursive
 function size_of_downstream_tree(current_location::Coordinate, search_tree::Matrix{Union{TreeNode, Missing}})
-    if ismissing(search_tree[current_location.x, current_location.y])
+    if (ismissing(search_tree[current_location.x, current_location.y]) || isempty(search_tree[current_location.x, current_location.y].children))
         return 0
     end
 
@@ -68,7 +68,6 @@ function get_downstream_frontier(current_location::Coordinate, parent::Coordinat
     if ismissing(search_tree[current_location.x, current_location.y])
         return [TreeNode(current_location, parent, filter!(x->x!=parent, node_matrix[current_location.x, current_location.y].neighbors))] #location, parent, children
     end
-
     current_node = search_tree[current_location.x, current_location.y]
     n = length(current_node.children)
     frontier = []
@@ -83,12 +82,12 @@ function get_downstream_frontier(current_location::Coordinate, parent::Coordinat
 end
 
 
-#Given that node is a dead end (has no children), remove nodes from the search tree
+#Given that node is a dead end (has no children), remove it from it's parent's chidren
 function prune(node::TreeNode, search_tree::Matrix{Union{TreeNode, Missing}})
     #remove node from its parent's list of children
     parent = node.parent
     filter!(x->x!=node.location, search_tree[parent.x, parent.y].children)
-    search_tree[node.location.x, node.location.y] = missing #remove this node from the search tree
+    #search_tree[node.location.x, node.location.y] = missing #remove this node from the search tree
     if length(search_tree[parent.x, parent.y].children) < 1
         search_tree = prune(search_tree[parent.x, parent.y], search_tree)
     end
@@ -116,7 +115,7 @@ function find_best_move(current_location::Coordinate, goal_location::Coordinate,
     (I, J) = size(search_tree)
     for i = 1:I
         for j = 1:J
-            if !ismissing(search_tree[i, j]) && (search_tree[i, j].location!=current_location)
+            if !ismissing(search_tree[i, j]) && (search_tree[i, j].location!=current_location) && (!isempty(search_tree[i, j].children)) #has children (isn't dead end). goal will already have been identified and have path_to_goal if it's in the search tree
                 eval = heuristic(search_tree[i, j].location, goal_location)
                 if eval < best #doesn't address ties for best
                     best = eval

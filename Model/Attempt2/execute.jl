@@ -15,7 +15,7 @@ w = 10
 m = maze(h,w);
 printmaze(m);
 
-Random.seed!(3);
+Random.seed!(4);
 
 #################################################################################
 #will not change. like ground truth
@@ -47,8 +47,8 @@ distracted[1] = retval[1].distracted
 for t = 2:T
     locations[t] = retval[2][t].current_location
     distracted[t] = retval[2][t].distracted
-    println(locations[t])
-    println(distracted[t])
+    #println(locations[t])
+    #println(distracted[t])
 end
 
 
