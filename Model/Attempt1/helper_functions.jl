@@ -97,7 +97,7 @@ end
 end
 
 @gen function find_best_IDDLS(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate}, speed_of_thought_factor::Float64)
-    println(current_node.location)
+    #println(current_node.location)
     #println("current_node ", current_node)
     candidates = current_node.viable_children;
     #evaluations will heuristic's the values for each path
@@ -117,10 +117,10 @@ end
         evaluations[i] = DLS(candidate_node, dpcpy_matrix, min_depth)
     end
     #while the goal hasn't been found and there are more than one good option
-    println("evaluations ", evaluations)
+    #println("evaluations ", evaluations)
     depth = min_depth
     while (!(0 in evaluations) && sum(evaluations .< Inf) > 1 && depth < max_depth)
-        println("in while loop")
+        #println("in while loop")
         depth = depth + 1
         for i = 1:length(candidates)
             #give DLS a fake copy of the node_matrix and all the nodes. don't actually want the node_matrix changed.
@@ -134,8 +134,8 @@ end
     end
 
 
-    println("depth", depth)
-    println("counter", counter)
+    #println("depth", depth)
+    #println("counter", counter)
     ############################################################################
     #computation stuff
     #computation time has mean counter, sd 5, min 0, max 100
@@ -145,9 +145,9 @@ end
     computation_time = @trace(trunc_normal(speed_of_thought_factor*counter + distracted*300, sd + distracted*10, 0.0, 100000.0), :computation_time)
     movement_time = @trace(trunc_normal(maximum([computation_time, 10.0]), sd, 0.0, 100000.0), :movement_time)
 
-    println("distracted ", distracted)
-    println("computation_time ", computation_time)
-    println("movement_time ", movement_time)
+    #println("distracted ", distracted)
+    #println("computation_time ", computation_time)
+    #println("movement_time ", movement_time)
     ############################################################################
     val, index = findmin(evaluations)
     #if all deadends
@@ -170,7 +170,7 @@ end
 end
 
 @gen function find_best_min_max(current_node::Node, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate}, speed_of_thought_factor::Float64)
-    println(current_node.location)
+    #println(current_node.location)
     #println("current_node ", current_node)
     candidates = current_node.viable_children;
     #evaluations will heuristic's the values for each path
@@ -190,9 +190,9 @@ end
         evaluations[i] = DLS(candidate_node, dpcpy_matrix, min_depth)
     end
     #while the goal hasn't been found and there are more than one good option
-    println("evaluations ", evaluations)
+    #println("evaluations ", evaluations)
     if (!(0 in evaluations) && sum(evaluations .< Inf) > 1)
-        println("in if")
+        #println("in if")
         for i = 1:length(candidates)
             #give DLS a fake copy of the node_matrix and all the nodes. don't actually want the node_matrix changed.
             dpcpy_matrix = deepcopy(node_matrix)
@@ -204,7 +204,7 @@ end
         end
     end
 
-    println("counter", counter)
+    #println("counter", counter)
     ############################################################################
     #computation stuff
     #computation time has mean counter, sd 5, min 0, max 100
@@ -213,10 +213,10 @@ end
     sd = 0.1
     computation_time = @trace(trunc_normal(speed_of_thought_factor*counter + distracted*300, sd + distracted*10, 0.0, 100000.0), :computation_time)
     movement_time = @trace(trunc_normal(maximum([computation_time, 10.0]), sd, 0.0, 100000.0), :movement_time)
-
-    println("distracted ", distracted)
-    println("computation_time ", computation_time)
-    println("movement_time ", movement_time)
+    #
+    # println("distracted ", distracted)
+    # println("computation_time ", computation_time)
+    # println("movement_time ", movement_time)
     ############################################################################
     val, index = findmin(evaluations)
     #if all deadends
@@ -272,7 +272,7 @@ end
 
 #backtracks all the way to the previous node with a viable child
 function backtrack(current_location::Coordinate, node_matrix::Matrix{Node}, way_so_far::Array{Coordinate})
-    println("in backtrack")
+    #println("in backtrack")
     not_there_yet = true
     way_to_get_out = Coordinate[]
 

@@ -66,7 +66,7 @@ end
 function get_downstream_frontier(current_location::Coordinate, parent::Coordinate, search_tree::Matrix{Union{TreeNode, Missing}})
 
     if ismissing(search_tree[current_location.x, current_location.y])
-        return [TreeNode(current_location, parent, filter!(x->x!=parent, node_matrix[current_location.x, current_location.y].neighbors))] #location, parent, children
+        return [TreeNode(current_location, parent, filter!(x->x!=parent, deepcopy(node_matrix[current_location.x, current_location.y].neighbors)))] #location, parent, children. deepcopy of anything with node_matrix
     end
     current_node = search_tree[current_location.x, current_location.y]
     n = length(current_node.children)
@@ -137,7 +137,7 @@ end
 function add_to_search_tree(to_add::TreeNode, search_tree::Matrix{Union{TreeNode, Missing}})
     search_tree[to_add.location.x, to_add.location.y] = to_add
     for child in to_add.children
-        tree_node = TreeNode(child, start.location, filter!(x->x!=to_add.location, node_matrix[child.x, child.y].neighbors)) #location, parent, children
+        tree_node = TreeNode(child, start.location, filter!(x->x!=to_add.location, deepcopy(node_matrix[child.x, child.y].neighbors))) #location, parent, children. deepcopy so that node_matrix doesn't actually get changed
     end
     return search_tree
 end

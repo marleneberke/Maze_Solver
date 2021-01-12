@@ -53,15 +53,15 @@ for t = 1:T
     movement_times[t] = trace[:chain => t => :find_best => :movement_time]
     distracted[t] = trace[:chain => t => :find_best => :distracted]
 end
-println(locations) #doesn't have starting value
-println(movement_times)
-println(distracted)
+#println(locations) #doesn't have starting value
+#println(movement_times)
+#println(distracted)
 #
 #
-# # #see if I can infer x and y from deterministic thing
-# num_particles = 100
-# unfold_pf_traces = unfold_particle_filter(num_particles, locations, movement_times, num_particles)
-# #
+# #see if I can infer x and y from deterministic thing
+num_particles = 1
+unfold_pf_traces = unfold_particle_filter(num_particles, locations, movement_times, num_particles)
+#
 # #
 # #how to access values in the traces from the particle filter.
 # inferred_distracted = zeros(T)
