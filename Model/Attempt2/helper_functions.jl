@@ -136,7 +136,7 @@ end
 
 function add_to_search_tree(to_add::TreeNode, search_tree::Matrix{Union{TreeNode, Missing}})
     search_tree[to_add.location.x, to_add.location.y] = to_add
-    for child in to_add.children
+    for child in to_add.children #prepping
         tree_node = TreeNode(child, start.location, filter!(x->x!=to_add.location, deepcopy(node_matrix[child.x, child.y].neighbors))) #location, parent, children. deepcopy so that node_matrix doesn't actually get changed
     end
     return search_tree
