@@ -148,7 +148,7 @@ Gen.load_generated_functions()
     max_tree_size = @trace(uniform_discrete(5, 25), :max_tree_size)
 
     tree = Matrix{Union{TreeNode, Missing}}(missing, h, w)
-    start_node = TreeNode(start_location, start_location, deepcopy(node_matrix[start.location.x, start.location.y].neighbors))#location, parents, children
+    start_node = TreeNode(start_location, start_location, deepcopy(node_matrix[start_location.x, start_location.y].neighbors))#location, parents, children
     add_to_search_tree(start_node, tree)
     path_to_goal = []
     # record initial state

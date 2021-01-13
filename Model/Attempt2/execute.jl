@@ -10,13 +10,13 @@ include("inference.jl")
 #################################################################################
 
 Random.seed!(1);
-h = 10
-w = 10
+h = 15
+w = 15
 m = maze(h,w);
 printmaze(m);
 
 #Random.seed!(4);
-Random.seed!(6);
+Random.seed!(4);
 
 #################################################################################
 #will not change. like ground truth
@@ -33,8 +33,9 @@ way_so_far = Coordinate[]
 goal_location = node_matrix[h, w].location
 
 #################################################################################
-T = 300 #should be 150
+T = 1500 #should be 150
 (trace, _) = Gen.generate(unfold_model, (T,))
+println("generating is done")
 #
 choices = get_choices(trace)
 retval = get_retval(trace)
