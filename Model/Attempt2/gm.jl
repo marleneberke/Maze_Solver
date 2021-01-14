@@ -19,16 +19,12 @@ end
 
     @trace(location_distribution(current_location.x, current_location.y), :location)
 
-    if current_location==Coordinate(5,2)
-        #println("time_since_last_move ", time_since_last_move)
-        #println("children of (5,2) ", search_tree[current_location.x, current_location.y].children)
-        #println("t ", t)
-    end
+    println("current_location ", current_location)
 
     #1% chance of becoming newly distracted, 95% remaining distracted if already so
     distracted = @trace(bernoulli(0.01+distracted*0.94), :distracted)
     if distracted #don't do anything
-        ##println("distracted")
+        ###println("distracted")
         return State(current_location, search_tree, distracted, time_since_last_move, time_since_last_thought, path_to_goal)
         #should time since last thought/move actually increase while distracted??? maybe not? what about movement time?
     end
@@ -45,7 +41,7 @@ end
         #if frontier is empty and there's no path to a goal, means this is a dead end. in that case, keeping starting search from parent node until you find new frontier
         current_location_to_search_from = current_location
         frontier = get_downstream_frontier(current_location_to_search_from, search_tree[current_location_to_search_from.x, current_location_to_search_from.y].parent, search_tree)
-        while isempty(frontier)
+        while isempty(frontier) #if frontier is empty, means you've realized it's a dead end
             current_location_to_search_from = search_tree[current_location_to_search_from.x,current_location_to_search_from.y].parent
             frontier = get_downstream_frontier(current_location_to_search_from, search_tree[current_location_to_search_from.x, current_location_to_search_from.y].parent, search_tree)
         end
@@ -60,7 +56,9 @@ end
         search_tree = add_to_search_tree(to_add, search_tree)
         #should add something for checking if it's the goal
         if to_add.location == goal_location
+            println("adding goal to tree")
             path_to_goal = find_path(current_location, goal_location, search_tree)
+            println("path_to_goal ", path_to_goal)
         elseif length(to_add.children) < 1 #if it doesn't have children, prune the search tree
             search_tree = prune(to_add, search_tree)
         end
@@ -69,20 +67,25 @@ end
         time_since_last_thought = time_since_last_thought  +  1
     end
 
+    #println("time_since_last_move ", time_since_last_move)
+
     moved = false
     #if movement is an option
     if time_since_last_move >= time_per_move
         if !isempty(path_to_goal) #if goal found, move toward it
-            if current_location==Coordinate(5,2)
-                ##println("goal found")
-            end
+            println("current_location ", current_location)
+            println("goal found")
             current_location = pop!(path_to_goal)
+            println("current_location ", current_location)
             moved = true
-        #if just one possible move, take it
+            #deadend, go back to parent
+        elseif length(search_tree[current_location.x, current_location.y].children) < 1
+            println("deadend")
+            current_location = search_tree[current_location.x, current_location.y].parent
+            moved = true
+            #if just one possible move, take it
         elseif length(search_tree[current_location.x, current_location.y].children) == 1
-            if current_location==Coordinate(5,2)
-                #println("only one option")
-            end
+            println("only one option")
             next_location = search_tree[current_location.x, current_location.y].children[1]
             #if it's not already there, make sure to add this node to the search tree. won't make the search tree too big because we only count downstream stuff
             if ismissing(search_tree[next_location.x, next_location.y])
@@ -90,39 +93,22 @@ end
             end
             current_location = next_location
             moved = true
-        #deadend, go back to parent
-        elseif length(search_tree[current_location.x, current_location.y].children) < 1
-            if current_location==Coordinate(5,2)
-                #println("deadend")
-            end
-            current_location = search_tree[current_location.x, current_location.y].parent
-            moved = true
         elseif size_of_downstream_tree(current_location, search_tree) >= max_tree_size #if search tree is too big, move based on heuristic
-            if current_location==Coordinate(5,2)
-                #println("search tree too big")
-                #println("size_of_downstream_tree ", size_of_downstream_tree(current_location, search_tree))
-                #println("printing search tree")
-                # (w, h) = size(search_tree)
-                # for i = 1:w
-                #     for j = 1:h
-                #         #println(i, " ", j)
-                #         #println(search_tree[i,j])
-                #     end
-                # end
-            end
+            println("search for best move")
             current_location = find_best_move(current_location, goal_location, search_tree)
             moved = true
         else
-            #println("could have but didn't move")
+            println("could have but didn't move")
+            @trace(bernoulli(1), :stopped_to_think)
             #println("size_of_downstream_tree ", size_of_downstream_tree(current_location, search_tree))
-            ##println(current_location)
+            ###println(current_location)
             #print the search tree
-            #println("printing search tree")
+            ##println("printing search tree")
             # (w, h) = size(search_tree)
             # for i = 1:w
             #     for j = 1:h
-            #         #println(i, " ", j)
-            #         #println(search_tree[i,j])
+            #         ##println(i, " ", j)
+            #         ##println(search_tree[i,j])
             #     end
             # end
         end
@@ -148,7 +134,7 @@ Gen.load_generated_functions()
     max_tree_size = @trace(uniform_discrete(5, 25), :max_tree_size)
 
     tree = Matrix{Union{TreeNode, Missing}}(missing, h, w)
-    start_node = TreeNode(start_location, start_location, deepcopy(node_matrix[start_location.x, start_location.y].neighbors))#location, parents, children
+    start_node = TreeNode(start_location, Coordinate(0,0), deepcopy(node_matrix[start_location.x, start_location.y].neighbors))#location, parents, children
     add_to_search_tree(start_node, tree)
     path_to_goal = []
     # record initial state

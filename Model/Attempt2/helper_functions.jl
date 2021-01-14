@@ -61,7 +61,7 @@ function size_of_downstream_tree(current_location::Coordinate, search_tree::Matr
     return 1 + sum(results)
 end
 
-#return a list of nodes that have the coordinates of nodes that aren't part of the search tree yet but are children of nodes
+#return a list of TreeNodes that have the coordinates of nodes that aren't part of the search tree yet but are children of nodes
 #in the search tree
 function get_downstream_frontier(current_location::Coordinate, parent::Coordinate, search_tree::Matrix{Union{TreeNode, Missing}})
 
@@ -94,38 +94,103 @@ function prune(node::TreeNode, search_tree::Matrix{Union{TreeNode, Missing}})
     return search_tree
 end
 
-#returns a path from the goal to the current node (backwards)
+#returns a path from the goal to the current node (backwards), so starts with goal and ends with a child of the current location
 function find_path(current_location::Coordinate, goal_location::Coordinate, search_tree::Matrix{Union{TreeNode, Missing}})
     path_to_goal = []
 
+    println("goal_location", goal_location)
+
     next = goal_location
     #work backwards
-    while next!=current_location
+    while next!=current_location && next!=Coordinate(0,0) #last part is for dealing with getting all the way to the start
         push!(path_to_goal, next)
         next = search_tree[next.x, next.y].parent
+        println("next ", next)
     end
+
+    if next!=current_location #means don't have a path to the current location
+        #means have a path from the goal location to the start. means the current location is not directly upstream of the goal.
+        #so, search the upstream path from the current location until we find an intersection and then splice the two paths together
+        path_from_current_location = []
+        next = search_tree[current_location.x,current_location.y].parent
+        while next ∉ path_to_goal
+            push!(path_from_current_location, next)
+            next = search_tree[next.x, next.y].parent
+            println("next ", next)
+        end
+        push!(path_from_current_location, next) #push next location, which should be the overlap between the two paths
+
+        #join the paths
+        index_of_intersection = findall(x->x==next, path_to_goal)[1]
+
+        r = reverse(path_from_current_location)
+        println("index_of_intersection ", index_of_intersection)
+        println("path_to_goal ", path_to_goal)
+        #println("path_to_goal ", path_to_goal[1:index_of_intersection])
+        truncated_path_to_goal = path_to_goal[1:(index_of_intersection-1)]
+        path_to_goal = vcat(truncated_path_to_goal, r)
+    end
+    println("path_to_goal ", path_to_goal)
     return path_to_goal
 end
 
-#find the most promising location currently in the search tree, and move toward it
-function find_best_move(current_location::Coordinate, goal_location::Coordinate, search_tree::Matrix{Union{TreeNode, Missing}})
-    best = Inf
-    best_location = current_location
+#returns a path from the goal to the current node (backwards). this one is designed for when the goal node is not on the search tree because it's part of the frontier
+#identical except for start
+function find_path(current_location::Coordinate, goal_node::TreeNode, search_tree::Matrix{Union{TreeNode, Missing}})
+    path_to_goal = []
 
-    (I, J) = size(search_tree)
-    for i = 1:I
-        for j = 1:J
-            if !ismissing(search_tree[i, j]) && (search_tree[i, j].location!=current_location) && (!isempty(search_tree[i, j].children)) #has children (isn't dead end). goal will already have been identified and have path_to_goal if it's in the search tree
-                eval = heuristic(search_tree[i, j].location, goal_location)
-                if eval < best #doesn't address ties for best
-                    best = eval
-                    best_location = search_tree[i, j].location
-                end
-            end
-        end
+    println("goal_node", goal_node)
+
+    next = goal_node.location
+    push!(path_to_goal, next)
+    next = goal_node.parent
+    println("next ", next)
+
+    #work backwards
+    while next!=current_location && next!=Coordinate(0,0) #last part is for dealing with getting all the way to the start
+        push!(path_to_goal, next)
+        next = search_tree[next.x, next.y].parent
+        println("next ", next)
     end
 
-    path = find_path(current_location, best_location, search_tree)
+    if next!=current_location #means don't have a path to the current location
+        #means have a path from the goal location to the start. means the current location is not directly upstream of the goal.
+        #so, search the upstream path from the current location until we find an intersection and then splice the two paths together
+        path_from_current_location = []
+        next = search_tree[current_location.x,current_location.y].parent
+        while next ∉ path_to_goal
+            push!(path_from_current_location, next)
+            next = search_tree[next.x, next.y].parent
+            println("next ", next)
+        end
+        push!(path_from_current_location, next) #push next location, which should be the overlap between the two paths
+
+        #join the paths
+        index_of_intersection = findall(x->x==next, path_to_goal)
+
+        path_to_goal = vcat(path_to_goal[1:index_of_intersection-1], reverse(path_from_current_location))
+    end
+    println("path_to_goal ", path_to_goal)
+    return path_to_goal
+end
+
+#find the most promising location on the frontier of the search tree downstream from current location and move toward it
+function find_best_move(current_location::Coordinate, goal_location::Coordinate, search_tree::Matrix{Union{TreeNode, Missing}})
+    frontier = get_downstream_frontier(current_location, search_tree[current_location.x,current_location.y].parent, search_tree)
+
+    println("current_location in find_best_move ", current_location)
+    println("frontier ", frontier)
+
+    n = length(frontier)
+    evals = Array{Float64, 1}(undef, n)
+    for i = 1:n
+        evals[i] = heuristic(frontier[i].location, goal_location)
+    end
+    val, index = findmin(evals)
+    best_node = frontier[index]
+    println("best node ", best_node)
+
+    path = find_path(current_location, best_node, search_tree)
     return pop!(path)
 end
 
@@ -137,7 +202,7 @@ end
 function add_to_search_tree(to_add::TreeNode, search_tree::Matrix{Union{TreeNode, Missing}})
     search_tree[to_add.location.x, to_add.location.y] = to_add
     for child in to_add.children #prepping
-        tree_node = TreeNode(child, start.location, filter!(x->x!=to_add.location, deepcopy(node_matrix[child.x, child.y].neighbors))) #location, parent, children. deepcopy so that node_matrix doesn't actually get changed
+        tree_node = TreeNode(child, to_add.location, filter!(x->x!=to_add.location, deepcopy(node_matrix[child.x, child.y].neighbors))) #location, parent, children. deepcopy so that node_matrix doesn't actually get changed
     end
     return search_tree
 end
