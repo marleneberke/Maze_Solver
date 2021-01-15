@@ -19,43 +19,21 @@ end
     #do the search
     depth_limit = @trace(uniform(8, 8), :depth_limit)
 
-    best_val = Inf
     best_location = current_location
-    locations_to_visit = [SearchNode(current_location, 0)]
-    global counter = 0;#keeps track of how many places have been searched
+    best_val = Inf
+    counter = 0#keeps track of how many places have been searched
     #Do the depth-first DLS
-    while !isempty(locations_to_visit)
-        to_search = pop!(locations_to_visit)
-
-        #evaluate to_search
-        if to_search.location == goal_location
-            best_val = 0
-            best_location = to_search.location
-        elseif isempty(to_search.children)
-            #do dead-end stuff
-        elseif heuristic(to_search.location, goal_location) < best_val
-            best_val = heuristic(to_search.location, goal_location)
-            best_location = best_location = to_search.location
-        end
-
-        update(to_search.location, to_search.children, current_node_matrix) #make sure have the right parent-child relationships
-
-        if to_search.depth < depth_limit
-            push!(locations_to_visit, to_search.children...)
-        end
-        counter = counter + 1
-    end
-
+    best_location, best_val, counter = conduct_search(best_location, best_val, counter)
     #if the best value we came across was Inf, means we're in a dead end. redo search going backwards
-    while best_val==Inf
-
+    if best_val==Inf
+        reverse(current_location, current_node_matrix)
+        best_location, best_val, counter = conduct_search(best_location, best_val, counter)
     end
 
     #go towards the best_location
     path = find_path(current_location, best_location)
-    pop!(path) #or pop first idk
-
-
+    next_location = pop!(path) #or pop first idk
+    (x, y) = (next_location.x, next_location.y)
 
     next_location = @trace(location_distribution(x, y), :next_location)
 
@@ -86,7 +64,7 @@ Gen.load_generated_functions()
     for x = 1:h
         for y = 1:w
             neighbors = find_neighbors(x, y, m)
-            node_matrix[x,y] = TreeNode(Coordinate(x,y), neighbors, missing, Coordinate[]) #location, neighbors, children
+            node_matrix[x,y] = TreeNode(Coordinate(x,y), copy(neighbors), Coordinate[], copy(neighbors)) #location, neighbors, children
         end
     end
 
