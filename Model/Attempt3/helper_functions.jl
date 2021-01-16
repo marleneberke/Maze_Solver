@@ -61,7 +61,7 @@ end
 
 #################################################################################
 #make parent the parent of these children
-function update(parent::Coordinate, children::Vector{Coordinate}, current_node_matrix::Matrix{TreeNode})
+function update_parent_child(parent::Coordinate, children::Vector{Coordinate}, current_node_matrix::Matrix{TreeNode})
     parent_node = current_node_matrix[parent.x, parent.y]
     for child in children
         child_node = current_node_matrix[child.x, child.y]
@@ -88,56 +88,118 @@ end
 #################################################################################
 #called when the current node is a dead end (has no children). want to make its parent it's child, continue recursively until reaching intersection
 #could combine with prune
-function reverse(current_node::TreeNode, current_node_matrix::Matrix{TreeNode})
+function reverse(location::Coordinate, current_node_matrix::Matrix{TreeNode})
+    current_node = current_node_matrix[location.x, location.y]
+    #println("current_node ", current_node)
     @assert isempty(current_node.children)
     @assert length(current_node.parent)==1
     parent = current_node.parent[1]
     parent_node = current_node_matrix[parent.x, parent.y]
     push!(current_node.children, parent)
     if isempty(parent_node.children)
-        reverse(parent_node, current_node_matrix)
+        reverse(parent_node.location, current_node_matrix)
     end
 end
 #################################################################################
+#return a path from start to finish using BFS over the neighbors
+function find_path(start::Coordinate, finish::Coordinate, current_node_matrix::Matrix{TreeNode})
+    queue = [[start]]
+    visited = Coordinate[]
+
+    while length(queue) > 0
+        println("queue ", queue)
+        path = pop!(queue)
+        vertex = path[end]
+
+        if vertex==finish
+            return path
+        end
+        vertex_node = current_node_matrix[vertex.x, vertex.y]
+        println("vertex_node.neighbors ", vertex_node.neighbors)
+        for neigh in vertex_node.neighbors
+            println("path ", path)
+            if !(neigh in visited)
+                new_path = push!(copy(path), neigh)
+                println("new_path ", new_path)
+                push!(queue, new_path)
+            end
+            push!(visited, vertex)
+        end
+    end
+end
+
+#################################################################################
 #returns a path from from to to. Stipulating that from is up-stream of to. so trace to's parents back to from.
-function find_path(from::Coordinate, to::Coordinate, current_node_matrix::Matrix{TreeNode})
+function find_path_upstream(from::Coordinate, to::Coordinate, current_node_matrix::Matrix{TreeNode})
     next = to
     path = Coordinate[]
 
-    while next!=from
-        push!(next, path)
-        next_node = current_node_matrix[next_node.location.x, next_node.location.y]
-        @assert length(next.parent)==1
-        next = next.parent[1]
+    while next!=from && next!=Coordinate(1, 1)
+        push!(path, next)
+        next_node = current_node_matrix[next.x, next.y]
+        @assert length(next_node.parent)==1
+        next = next_node.parent[1]
     end
     return path
 end
 #returns an array that starts with to and ends with the one before from
 
 #################################################################################
-#Conducts a DLS search. Stops if the goal is found. Returns the best location, it's value, and the counter
-function conduct_search(best_location::Coordinate, best_val::Int64, counter::Int64)
-    locations_to_visit = [SearchNode(current_location, 0)]
-    while !isempty(locations_to_visit) & best_val > 0
-        to_search = pop!(locations_to_visit)
+#returns a path from from to to. from and to must have a common parent
+function find_path_complex(from::Coordinate, to::Coordinate, current_node_matrix::Matrix{TreeNode})
+    path_to = find_path_upstream(Coordinate(1, 1), to, current_node_matrix)
+    push!(path_to, Coordinate(1, 1))
+    println("path_to ", path_to)
+    path_from = find_path_upstream(Coordinate(1, 1), from, current_node_matrix)
+    push!(path_from, Coordinate(1, 1))
+    println("path_from ", path_from)
+    #now I have paths going from (1, 1) to each
 
+    overlap = intersect(path_to, path_from)
+    intersection = overlap[1]
+    println("intersection ", intersection)
+
+    index_path_to = findfirst(isequal(intersection), path_to)
+    index_path_from = findfirst(isequal(intersection), path_from)
+
+    path = vcat(path_to[1:index_path_to], Base.reverse(path_from[2:index_path_from-1])) #reverses the path_from
+    return path
+end
+#returns an array that starts with to and ends with the one before from
+
+#################################################################################
+#Conducts a DLS search. Stops if the goal is found. Returns the best location, it's value, and the counter
+function conduct_search(current_location::Coordinate , best_location::Coordinate, best_val::Float64, counter::Int64, depth_limit::Int64, current_node_matrix::Matrix{TreeNode})
+    locations_to_visit = [SearchNode(current_location, 0)] #don't want to actually consider the current location
+    while !isempty(locations_to_visit) && (best_val > 0)
+        to_search = pop!(locations_to_visit)
+        to_search_node = current_node_matrix[to_search.location.x, to_search.location.y]
+        #println("to_search_node ", to_search_node)
         #evaluate to_search
-        if to_search.location == goal_location
-            best_val = 0
-            best_location = to_search.location
-        elseif isempty(to_search.children)
-            #do dead-end stuff. remove the children
-            prune(to_search, current_node_matrix)
-        elseif heuristic(to_search.location, goal_location) < best_val
-            best_val = heuristic(to_search.location, goal_location)
-            best_location = best_location = to_search.location
+        #don't evalute the current_node
+        if to_search.location!==current_location
+            if to_search.location == goal_location
+                best_val = 0
+                best_location = to_search.location
+            elseif isempty(to_search_node.children)
+                #do dead-end stuff. remove the children
+                prune(to_search_node, current_node_matrix)
+            elseif heuristic(to_search.location, goal_location) < best_val
+                best_val = heuristic(to_search.location, goal_location)
+                best_location = best_location = to_search.location
+            end
         end
 
+        #println("best_val ", best_val)
+        #println("best_location ", best_location)
+
         #make to_search a parent of it's children, and remove it from it's children's children
-        update(to_search.location, to_search.children, current_node_matrix) #make sure have the right parent-child relationships
+        update_parent_child(to_search.location, to_search_node.children, current_node_matrix) #make sure have the right parent-child relationships
 
         if to_search.depth < depth_limit
-            push!(locations_to_visit, to_search.children...)
+            for child in to_search_node.children
+                push!(locations_to_visit, SearchNode(child, to_search.depth+1))
+            end
         end
         counter = counter + 1
     end
