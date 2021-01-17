@@ -16,6 +16,8 @@ function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,
         ess = effective_sample_size(normalize_weights(state.log_weights)[2])
         println("ess after resample ", ess)
         #obs = Gen.choicemap((:chain => t => :next_location, Coordinate(1,2)))
+        #obs = Gen.choicemap((:chain => t => :test, tests[t]))
+        #obs[:chain => t => :next_location] = locations[t]
         obs = Gen.choicemap((:chain => t => :next_location, locations[t])) #put the location
         obs[:chain => t => :time_spent_here] = time_spent_here[t] #and movement times
         #put times stuck
