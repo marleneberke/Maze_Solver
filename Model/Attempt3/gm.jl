@@ -19,7 +19,7 @@ end
     #println("current_location ", current_location)
     ###########################################################################
     #do the search
-    depth_limit = @trace(uniform_discrete(8, 8), :depth_limit)
+    depth_limit = @trace(uniform_discrete(5, 10), :depth_limit)
 
     best_location = current_location
     best_val = Inf
