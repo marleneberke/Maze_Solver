@@ -84,12 +84,15 @@ unfold_pf_traces = unfold_particle_filter(num_particles, locations, time_spent_h
 #
 #how to access values in the traces from the particle filter.
 inferred_distracted = zeros(T)
+inferred_how_long_distracted = zeros(T)
 for i = 1:num_particles
     for t = 1:T
         inferred_distracted[t] = inferred_distracted[t] + unfold_pf_traces[i][:chain => t => :distracted]
+        inferred_how_long_distracted[t] = inferred_how_long_distracted[t] + unfold_pf_traces[i][:chain => t => :how_long_distracted]
     end
 end
 inferred_distracted = inferred_distracted./num_particles
+inferred_how_long_distracted = inferred_how_long_distracted./num_particles
 MSE = sum((distracted .- inferred_distracted).^2)
 
 where_distracted = locations[findall(x->x==true, distracted).-1] #check which coordinates that corresponds to
@@ -102,7 +105,10 @@ filter!(x->x!=goal_location, where_inferred_distracted)
 #could do a more fine-grained comparison
 where_distracted==where_inferred_distracted
 
-#unfold_pf_traces[1][:chain => 199 => :distracted]
+#compare how long distracted
+how_long_distracted[findall(x->x==true, distracted)]
+inferred_how_long_distracted[findall(x->x==true, distracted)]
+
 
 #################################################################################
 
