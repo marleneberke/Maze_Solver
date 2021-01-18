@@ -186,7 +186,7 @@ function conduct_search(current_location::Coordinate , best_location::Coordinate
                 prune(to_search_node, current_node_matrix)
             elseif heuristic(to_search.location, goal_location) < best_val
                 best_val = heuristic(to_search.location, goal_location)
-                best_location = best_location = to_search.location
+                best_location = to_search.location
             end
         end
 
