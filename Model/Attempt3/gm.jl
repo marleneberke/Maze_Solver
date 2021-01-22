@@ -19,7 +19,7 @@ end
     #println("current_location ", current_location)
     ###########################################################################
     #do the search
-    depth_limit = @trace(uniform_discrete(5, 10), :depth_limit)
+    depth_limit = @trace(uniform_discrete(5, 12), :depth_limit)
 
     best_location = current_location
     best_val = Inf
@@ -41,12 +41,12 @@ end
 
     ###########################################################################
     #move times
-    distracted = @trace(bernoulli(0.02), :distracted)
+    distracted = @trace(bernoulli(0.5), :distracted)
     if distracted
         how_long_distracted = @trace(geometric(0.02), :how_long_distracted) #could change to exponential if I want continuous, but then I'd need uniform to also be continuous
 
         #how_long_distracted = @trace(uniform_discrete(1, 20), :how_long_distracted) #could change to exponential if I want continuous, but then I'd need uniform to also be continuous
-        println("how_long_distracted ", how_long_distracted)
+        #println("how_long_distracted ", how_long_distracted)
     else
         how_long_distracted = @trace(uniform_discrete(0, 0), :how_long_distracted) #may need to change this
     end

@@ -21,10 +21,23 @@ function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,
         #put times stuck
         println(locations[t])
         Gen.particle_filter_step!(state, (t,), (UnknownChange(),), obs)
+
+        #how_many_sampled_distracted = 0
+        # for i = 1:num_particles
+        #     if state.traces[i][:chain => t => :distracted]
+        #         how_many_sampled_distracted = how_many_sampled_distracted + 1
+        #         println("how_long_distracted ", state.traces[i][:chain => t => :how_long_distracted])
+        #     else
+        #         println("depth_limit ", state.traces[i][:chain => t => :depth_limit])
+        #     end
+        #     println("weight ", state.log_weights[i])
+        # end
+        # println("sampled_distracted ", how_many_sampled_distracted)
+
         ess = effective_sample_size(normalize_weights(state.log_weights)[2])
         println("ess after pf step ", ess)
         for i = 1:num_particles
-            println("weights ", state.log_weights[i])
+            println("weight ", state.log_weights[i])
             #println(state.traces[i][:chain => t => :distracted])
             #println(state.traces[i][:chain => t])
             #choices = get_choices(state.traces[i])

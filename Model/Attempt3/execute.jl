@@ -9,14 +9,14 @@ include("inference.jl")
 
 #################################################################################
 
-Random.seed!(1);
-h = 10
-w = 10
+Random.seed!(6);
+h = 15
+w = 15
 m = maze(h,w);
 printmaze(m);
 
 #Random.seed!(4);
-Random.seed!(2);
+Random.seed!(1);
 
 #################################################################################
 # node_matrix = Matrix{TreeNode}(undef, h, w)
@@ -30,7 +30,7 @@ Random.seed!(2);
 goal_location = Coordinate(h, w)
 
 #################################################################################
-S = 40 #number of steps (NOT time) #30
+S = 160 #number of steps (NOT time) #30
 (trace, _) = Gen.generate(unfold_model, (S,))
 println("generating is done")
 
@@ -72,42 +72,42 @@ speed_of_thought_factor = choices[:speed_of_thought_factor]
 
 #################################################################################
 
-where_distracted = locations[findall(x->x==true, distracted).-1] #check which coordinates that corresponds to
-how_long_distracted[distracted]
-time_spent_here[distracted]
+# where_distracted = locations[findall(x->x==true, distracted).-1] #check which coordinates that corresponds to
+# how_long_distracted[distracted]
+# time_spent_here[distracted]
 
 #################################################################################
 # # #see if I can infer x and y from deterministic thing
-num_particles = 200 #the lower the probability of distraction, the more particles I need
-unfold_pf_traces = unfold_particle_filter(num_particles, locations, time_spent_here, num_particles);
+# num_particles = 200 #the lower the probability of distraction, the more particles I need
+# unfold_pf_traces = unfold_particle_filter(num_particles, locations, time_spent_here, num_particles);
+# #
+# #
+# #how to access values in the traces from the particle filter.
+# inferred_distracted = zeros(T)
+# inferred_how_long_distracted = zeros(T)
+# for i = 1:num_particles
+#     for t = 1:T
+#         inferred_distracted[t] = inferred_distracted[t] + unfold_pf_traces[i][:chain => t => :distracted]
+#         inferred_how_long_distracted[t] = inferred_how_long_distracted[t] + unfold_pf_traces[i][:chain => t => :how_long_distracted]
+#     end
+# end
+# inferred_distracted = inferred_distracted./num_particles
+# inferred_how_long_distracted = inferred_how_long_distracted./num_particles
+# MSE = sum((distracted .- inferred_distracted).^2)
 #
+# where_distracted = locations[findall(x->x==true, distracted).-1] #check which coordinates that corresponds to
+# where_inferred_distracted = locations[findall(x->x>0.5, inferred_distracted).-1] #more than half of the particles say distracted
 #
-#how to access values in the traces from the particle filter.
-inferred_distracted = zeros(T)
-inferred_how_long_distracted = zeros(T)
-for i = 1:num_particles
-    for t = 1:T
-        inferred_distracted[t] = inferred_distracted[t] + unfold_pf_traces[i][:chain => t => :distracted]
-        inferred_how_long_distracted[t] = inferred_how_long_distracted[t] + unfold_pf_traces[i][:chain => t => :how_long_distracted]
-    end
-end
-inferred_distracted = inferred_distracted./num_particles
-inferred_how_long_distracted = inferred_how_long_distracted./num_particles
-MSE = sum((distracted .- inferred_distracted).^2)
-
-where_distracted = locations[findall(x->x==true, distracted).-1] #check which coordinates that corresponds to
-where_inferred_distracted = locations[findall(x->x>0.5, inferred_distracted).-1] #more than half of the particles say distracted
-
-#remove all the stuff at (10,10)
-filter!(x->x!=goal_location, where_distracted)
-filter!(x->x!=goal_location, where_inferred_distracted)
-
-#could do a more fine-grained comparison
-where_distracted==where_inferred_distracted
-
-#compare how long distracted
-how_long_distracted[findall(x->x==true, distracted)]
-inferred_how_long_distracted[findall(x->x==true, distracted)]
+# #remove all the stuff at (10,10)
+# filter!(x->x!=goal_location, where_distracted)
+# filter!(x->x!=goal_location, where_inferred_distracted)
+#
+# #could do a more fine-grained comparison
+# where_distracted==where_inferred_distracted
+#
+# #compare how long distracted
+# how_long_distracted[findall(x->x==true, distracted)]
+# inferred_how_long_distracted[findall(x->x==true, distracted)]
 
 
 #################################################################################

@@ -206,3 +206,5 @@ function conduct_search(current_location::Coordinate , best_location::Coordinate
 
     return (best_location, best_val, counter)
 end
+
+#################################################################################
