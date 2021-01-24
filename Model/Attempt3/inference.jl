@@ -38,6 +38,12 @@ function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,
         println("ess after pf step ", ess)
         for i = 1:num_particles
             println("weight ", state.log_weights[i])
+            # if (locations[t] == Coordinate(6, 6)) | (locations[t] == Coordinate(6, 7))
+            #     println("depth ", state.traces[i][:chain => t => :depth_limit])
+            #     println(state.traces[i][:chain => t => :distracted])
+            #     println(state.traces[i][:chain => t => :how_long_distracted])
+            #     println(state.traces[i][:chain => t => :time_spent_here])
+            # end
             #println(state.traces[i][:chain => t => :distracted])
             #println(state.traces[i][:chain => t])
             #choices = get_choices(state.traces[i])

@@ -168,7 +168,7 @@ end
 # #returns an array that starts with to and ends with the one before from
 
 #################################################################################
-#Conducts a DLS search. Stops if the goal is found. Returns the best location, it's value, and the counter
+#Conducts a DLS search. Stops if the goal is found. Returns the best location, it's value, and the counter.
 function conduct_search(current_location::Coordinate , best_location::Coordinate, best_val::Float64, counter::Int64, depth_limit::Int64, current_node_matrix::Matrix{TreeNode})
     locations_to_visit = [SearchNode(current_location, 0)] #don't want to actually consider the current location
     while !isempty(locations_to_visit) && (best_val > 0)
@@ -203,6 +203,16 @@ function conduct_search(current_location::Coordinate , best_location::Coordinate
         end
         counter = counter + 1
     end
+
+    #println("counter ", counter)
+
+    #There's a possiblity that this picks a location that's found later in the search to be a dead end.
+    #If that happens, run the search again, but keep the old counter
+    if best_location!=current_location && best_location!=goal_location && isempty(current_node_matrix[best_location.x, best_location.y].children)
+        (best_location, best_val, _) = conduct_search(current_location, best_location, Inf, 0, depth_limit, current_node_matrix)
+    end
+    #println(best_location)
+    #println(current_node_matrix[best_location.x, best_location.x])
 
     return (best_location, best_val, counter)
 end

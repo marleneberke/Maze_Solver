@@ -30,7 +30,7 @@ Random.seed!(1);
 goal_location = Coordinate(h, w)
 
 #################################################################################
-S = 160 #number of steps (NOT time) #30
+S = 150 #number of steps (NOT time) #30
 (trace, _) = Gen.generate(unfold_model, (S,))
 println("generating is done")
 

@@ -9,9 +9,9 @@ include("inference.jl")
 
 #################################################################################
 
-Random.seed!(4);
-h = 7
-w = 7
+Random.seed!(6);
+h = 15
+w = 15
 m = maze(h,w);
 printmaze(m);
 

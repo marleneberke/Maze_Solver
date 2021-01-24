@@ -1,218 +1,218 @@
 0.0
 Coordinate(1, 1)
-140
+60
 Coordinate(1, 2)
-35
+60
 Coordinate(1, 3)
-160
+320
 Coordinate(1, 4)
-35
+60
 Coordinate(1, 5)
-35
+60
 Coordinate(2, 5)
-35
+60
 Coordinate(3, 5)
-50
+320
 Coordinate(4, 5)
-35
+60
 Coordinate(4, 6)
-35
+60
 Coordinate(4, 7)
-35
+60
 Coordinate(5, 7)
-35
+60
 Coordinate(5, 8)
-35
+60
 Coordinate(5, 9)
-35
+60
 Coordinate(5, 10)
-35
+60
 Coordinate(5, 11)
-35
+60
 Coordinate(6, 11)
-35
+60
 Coordinate(6, 12)
-35
+60
 Coordinate(6, 13)
-35
+60
 Coordinate(5, 13)
-35
+60
 Coordinate(5, 14)
-35
+320
 Coordinate(5, 15)
-200
+60
 Coordinate(6, 15)
-35
+60
 Coordinate(6, 14)
-35
+60
 Coordinate(7, 14)
-35
+60
 Coordinate(7, 15)
-35
+60
 Coordinate(8, 15)
-35
+60
 Coordinate(9, 15)
-35
+60
 Coordinate(9, 14)
-35
+60
 Coordinate(9, 13)
-35
+60
 Coordinate(9, 12)
-35
+60
 Coordinate(9, 11)
-35
+60
 Coordinate(8, 11)
-35
+60
 Coordinate(8, 10)
-35
+60
 Coordinate(8, 9)
-35
+60
 Coordinate(8, 8)
-35
+60
 Coordinate(9, 8)
-35
+60
 Coordinate(10, 8)
-35
+60
 Coordinate(11, 8)
-35
+60
 Coordinate(12, 8)
-35
+60
 Coordinate(12, 7)
-35
+60
 Coordinate(11, 7)
-35
+60
 Coordinate(11, 6)
-35
+60
 Coordinate(10, 6)
-35
+60
 Coordinate(10, 7)
-35
+60
 Coordinate(9, 7)
-35
+60
 Coordinate(8, 7)
-35
+60
 Coordinate(7, 7)
-35
+60
 Coordinate(6, 7)
-120
+320
 Coordinate(6, 6)
-35
+60
 Coordinate(7, 6)
-35
+60
 Coordinate(7, 5)
-35
+60
 Coordinate(8, 5)
-35
+60
 Coordinate(9, 5)
-35
+60
 Coordinate(10, 5)
-35
+60
 Coordinate(11, 5)
-35
+60
 Coordinate(11, 4)
-35
+60
 Coordinate(10, 4)
-35
+60
 Coordinate(10, 3)
-35
+60
 Coordinate(11, 3)
-35
+60
 Coordinate(12, 3)
-35
+60
 Coordinate(12, 2)
-35
+60
 Coordinate(12, 1)
-100
+60
 Coordinate(13, 1)
-35
+60
 Coordinate(13, 2)
-35
+60
 Coordinate(13, 3)
-35
+60
 Coordinate(14, 3)
-35
+60
 Coordinate(14, 2)
-35
+60
 Coordinate(15, 2)
-35
+60
 Coordinate(15, 3)
-45
+60
 Coordinate(15, 4)
-35
+60
 Coordinate(15, 5)
-35
+60
 Coordinate(15, 6)
-35
+60
 Coordinate(15, 7)
-35
+60
 Coordinate(14, 7)
-35
+60
 Coordinate(14, 6)
-35
+60
 Coordinate(14, 5)
-35
+60
 Coordinate(13, 5)
-35
+60
 Coordinate(12, 5)
-80
+60
 Coordinate(12, 6)
-35
+60
 Coordinate(13, 6)
-35
+60
 Coordinate(13, 7)
-35
+60
 Coordinate(13, 8)
-35
+60
 Coordinate(14, 8)
-35
+60
 Coordinate(15, 8)
-35
+60
 Coordinate(15, 9)
-35
+60
 Coordinate(14, 9)
-35
+60
 Coordinate(14, 10)
-35
+60
 Coordinate(14, 11)
-35
+60
 Coordinate(14, 12)
-35
+60
 Coordinate(14, 13)
-35
+60
 Coordinate(13, 13)
-35
+60
 Coordinate(13, 12)
-35
+60
 Coordinate(12, 12)
-35
+60
 Coordinate(12, 11)
-35
+60
 Coordinate(11, 11)
-35
+60
 Coordinate(10, 11)
-100
+320
 Coordinate(10, 12)
-35
+60
 Coordinate(11, 12)
-35
+60
 Coordinate(11, 13)
-35
+60
 Coordinate(12, 13)
-35
+60
 Coordinate(12, 14)
-35
+60
 Coordinate(11, 14)
-35
+60
 Coordinate(11, 15)
-100
+60
 Coordinate(12, 15)
-35
+60
 Coordinate(13, 15)
-35
+60
 Coordinate(14, 15)
-35
+60
 Coordinate(14, 14)
-50
+60
 Coordinate(15, 14)
-55
+60
 Coordinate(15, 15)
