@@ -21,7 +21,8 @@ end
     #do the search
     #depth_limit = @trace(uniform_discrete(8, 15), :depth_limit)
     #depth_limit = @trace(categorical([]), :depth_limit) #could try categorical
-    depth_limit = @trace(uniform_discrete(3, 18), :depth_limit)
+    #depth_limit = @trace(uniform_discrete(3, 18), :depth_limit)
+    depth_limit = @trace(poisson(15), :depth_limit)
 
     best_location = current_location
     best_val = Inf
@@ -43,18 +44,24 @@ end
 
     ###########################################################################
     #move times
-    distracted = @trace(bernoulli(0.5), :distracted)
-    if distracted
+    #distracted = @trace(bernoulli(0.5), :distracted)
+    #if distracted
         #make distraction a minimum. could truncate the geometric distribution or just add to it
-        how_long_distracted = @trace(geometric(0.02), :how_long_distracted) #could change to exponential if I want continuous, but then I'd need uniform to also be continuous
-        how_long_distracted = how_long_distracted + 4
+        #how_long_distracted = @trace(geometric(0.02), :how_long_distracted) #could change to exponential if I want continuous, but then I'd need uniform to also be continuous
+        #how_long_distracted = how_long_distracted + 4
         #how_long_distracted = @trace(uniform_discrete(1, 20), :how_long_distracted) #could change to exponential if I want continuous, but then I'd need uniform to also be continuous
         #println("how_long_distracted ", how_long_distracted)
-    else
-        how_long_distracted = @trace(uniform_discrete(0, 0), :how_long_distracted) #may need to change this
-    end
+    #else
+        #how_long_distracted = @trace(uniform_discrete(0, 0), :how_long_distracted) #may need to change this
+    #end
+    #println("current_location ", current_location)
+    #println("counter ", counter)
+
+    how_long_distracted = @trace(geometric(0.02), :how_long_distracted)
+
     thinking_time = speed_of_thought_factor*(counter + how_long_distracted)
-    movement_minimum = speed_of_thought_factor*4 #should be in same units of the counter. this is saying minimum "game speed" movement is same as searching 6 squares
+    #movement_minimum = speed_of_thought_factor*6 #should be in same units of the counter. this is saying minimum "game speed" movement is same as searching 6 squares
+    movement_minimum = 60
     #movement_time = maximum([movement_minimum, thinking_time])
     #just to have movement_time be saved
     #@trace(uniform_discrete(movement_time, movement_time), :time_spent_here)

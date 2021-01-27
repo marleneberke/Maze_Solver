@@ -1,22 +1,23 @@
 using Gen
 using Distributions
 using StatsBase
+using PyPlot
 
 include("../maze_generator.jl")
 include("helper_functions.jl")
 include("gm.jl")
-include("inference.jl")
+include("pf_inference.jl")
 
 #################################################################################
 
-Random.seed!(6);
-h = 15
-w = 15
+Random.seed!(4);
+h = 7
+w = 7
 m = maze(h,w);
 printmaze(m);
 
 #Random.seed!(4);
-Random.seed!(1);
+Random.seed!(3);
 
 #################################################################################
 # node_matrix = Matrix{TreeNode}(undef, h, w)
@@ -53,7 +54,7 @@ end
 close(f)
 #################################################################################
 # # #see if I can infer x and y from deterministic thing
-num_particles = 100 #the lower the probability of distraction, the more particles I need #500 was goos
+num_particles = 10000 #the lower the probability of distraction, the more particles I need #500 was goos
 unfold_pf_traces = unfold_particle_filter(num_particles, locations, time_spent_here, num_particles);
 #
 #
@@ -61,12 +62,18 @@ unfold_pf_traces = unfold_particle_filter(num_particles, locations, time_spent_h
 T = length(locations)
 inferred_distracted = zeros(T)
 inferred_how_long_distracted = zeros(T)
+hist = zeros(num_particles)
 for i = 1:num_particles
     for t = 1:T
         inferred_distracted[t] = inferred_distracted[t] + unfold_pf_traces[i][:chain => t => :distracted]
+        if t == 7
+            hist[i] = unfold_pf_traces[i][:chain => t => :how_long_distracted]
+        end
         inferred_how_long_distracted[t] = inferred_how_long_distracted[t] + unfold_pf_traces[i][:chain => t => :how_long_distracted]
     end
 end
+#println(hist)
+#g = plt.hist(hist, 50)
 inferred_distracted = inferred_distracted./num_particles
 inferred_how_long_distracted = inferred_how_long_distracted./num_particles
 

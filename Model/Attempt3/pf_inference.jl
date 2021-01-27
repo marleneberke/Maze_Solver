@@ -12,15 +12,32 @@ function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,
 
     for t=1:length(locations)
         println(t)
+
         maybe_resample!(state, ess_threshold=num_particles)#used to be /2. now always resampling becasue I want to get rid of -Inf before they become NANs
         ess = effective_sample_size(normalize_weights(state.log_weights)[2])
         println("ess after resample ", ess)
+
+        if t==8
+            hist = zeros(num_particles)
+            for i = 1:num_particles
+                hist[i] = state.traces[i][:chain => 7 => :how_long_distracted]
+            end
+            h = plt.hist(hist, 50)
+        end
+
+
+
         #obs = Gen.choicemap((:chain => t => :next_location, Coordinate(1,2)))
         obs = Gen.choicemap((:chain => t => :next_location, locations[t])) #put the location
         obs[:chain => t => :time_spent_here] = time_spent_here[t] #and movement times
         #put times stuck
         println(locations[t])
         Gen.particle_filter_step!(state, (t,), (UnknownChange(),), obs)
+
+        #rejuvination move
+
+
+
 
         #how_many_sampled_distracted = 0
         # for i = 1:num_particles
@@ -54,6 +71,16 @@ function unfold_particle_filter(num_particles::Int, locations::Array{Coordinate,
     # return a sample of traces from the weighted collection:
     return Gen.sample_unweighted_traces(state, num_samples)
 end
+
+@gen function perturbation_proposal(prev_trace)
+    choices = get_choices(prev_trace)
+    vy = @trace(normal(choices[(:vy, t)], 1e-3), (:vy, t))
+end
+
+function perturbation_move(trace)
+    Gen.metropolis_hastings(trace, perturbation_proposal, ())
+end
+
 
 
 function effective_sample_size(log_normalized_weights::Vector{Float64})

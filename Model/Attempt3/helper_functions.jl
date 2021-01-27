@@ -170,6 +170,7 @@ end
 #################################################################################
 #Conducts a DLS search. Stops if the goal is found. Returns the best location, it's value, and the counter.
 function conduct_search(current_location::Coordinate , best_location::Coordinate, best_val::Float64, counter::Int64, depth_limit::Int64, current_node_matrix::Matrix{TreeNode})
+    #println("current_location ", current_location)
     locations_to_visit = [SearchNode(current_location, 0)] #don't want to actually consider the current location
     while !isempty(locations_to_visit) && (best_val > 0)
         to_search = pop!(locations_to_visit)
@@ -197,11 +198,15 @@ function conduct_search(current_location::Coordinate , best_location::Coordinate
         update_parent_child(to_search.location, to_search_node.children, current_node_matrix) #make sure have the right parent-child relationships
 
         if to_search.depth < depth_limit
-            for child in to_search_node.children
+            for child in shuffle!(to_search_node.children) #shuffle so the order isn't always the same
                 push!(locations_to_visit, SearchNode(child, to_search.depth+1))
             end
         end
         counter = counter + 1
+
+
+        #println("to_search ", to_search)
+        #println("counter ", counter)
     end
 
     #println("counter ", counter)

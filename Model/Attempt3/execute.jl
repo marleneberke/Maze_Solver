@@ -9,14 +9,14 @@ include("inference.jl")
 
 #################################################################################
 
-Random.seed!(6);
-h = 15
-w = 15
+Random.seed!(4);
+h = 7
+w = 7
 m = maze(h,w);
 printmaze(m);
 
 #Random.seed!(4);
-Random.seed!(1);
+Random.seed!(2);
 
 #################################################################################
 # node_matrix = Matrix{TreeNode}(undef, h, w)
