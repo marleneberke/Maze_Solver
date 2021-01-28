@@ -24,6 +24,11 @@ end
     #depth_limit = @trace(uniform_discrete(3, 18), :depth_limit)
     depth_limit = @trace(poisson(15), :depth_limit)
 
+    # if current_location == Coordinate(5, 1)
+    #     println("depth_limit ", depth_limit)
+    #     println("current_node_matrix[5, 1] ", current_node_matrix[5, 1])
+    # end
+
     best_location = current_location
     best_val = Inf
     counter = 0#keeps track of how many places have been searched
@@ -41,6 +46,11 @@ end
     (x, y) = (next_location.x, next_location.y)
 
     next_location = @trace(location_distribution(x, y), :next_location)
+
+    # if current_location == Coordinate(5, 1)
+    #     #println("depth_limit ", depth_limit)
+    #     println("counter ", counter)
+    # end
 
     ###########################################################################
     #move times
@@ -68,10 +78,6 @@ end
     sd = speed_of_thought_factor
     time_spent_here = @trace(trunc_normal(Float64(thinking_time), Float64(sd), Float64(movement_minimum), 10000.0), :time_spent_here)
 
-    # if current_location == Coordinate(6, 7)
-    #     println("thinking_time ", thinking_time)
-    #     println("time_spent_here ", time_spent_here)
-    # end
     ###########################################################################
 
     next_state = State(next_location, current_node_matrix)

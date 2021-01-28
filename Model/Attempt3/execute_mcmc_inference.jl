@@ -53,11 +53,11 @@ end
 
 close(f)
 #################################################################################
-num_iter = 1000000 #the lower the probability of distraction, the more particles I need
+num_iter = 10 #the lower the probability of distraction, the more particles I need
 #burnin = 5000 #throw out this many
-inferred_how_long_distracted = MCMC_inference(num_iter, locations, time_spent_here);
+inferred_how_long_distracted, tr = MCMC_inference(num_iter, locations, time_spent_here);
 
-g = plt.hist(inferred_how_long_distracted, 50);
+g = plt.hist(inferred_how_long_distracted[Int64(num_iter/2):num_iter], 50); #burnin is half the iterations
 
 
 

@@ -197,8 +197,15 @@ function conduct_search(current_location::Coordinate , best_location::Coordinate
         #make to_search a parent of it's children, and remove it from it's children's children
         update_parent_child(to_search.location, to_search_node.children, current_node_matrix) #make sure have the right parent-child relationships
 
-        if to_search.depth < depth_limit
-            for child in shuffle!(to_search_node.children) #shuffle so the order isn't always the same
+        if to_search.depth < depth_limit# && to_search.location != goal_location #if you're at the goal, don't add its children
+            shuffled = shuffle!(to_search_node.children)
+            # if to_search.location == Coordinate(5, 1)
+            #     println("shuffled ", shuffled)
+            # end
+            for child in shuffled#shuffle so the order isn't always the same
+                # if to_search.location == Coordinate(5, 1)
+                #     println("child ", child)
+                # end
                 push!(locations_to_visit, SearchNode(child, to_search.depth+1))
             end
         end
