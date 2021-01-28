@@ -1,7 +1,8 @@
 using Gen
 using Distributions
-using StatsBase
+using StatsBase #I think shuffle! is from StatsBase
 using PyPlot
+using Plotly
 
 include("../maze_generator.jl")
 include("helper_functions.jl")
@@ -10,14 +11,14 @@ include("MCMC_inference.jl")
 
 #################################################################################
 
-Random.seed!(4);
-h = 7
-w = 7
+Random.seed!(6);
+h = 15
+w = 15
 m = maze(h,w);
 printmaze(m);
 
 #Random.seed!(4);
-Random.seed!(3);
+Random.seed!(1);
 
 #################################################################################
 # node_matrix = Matrix{TreeNode}(undef, h, w)
@@ -52,14 +53,48 @@ for i = 3:n #skip the first two lines
 end
 
 close(f)
+
+t_pause = findfirst(time_spent_here.>60)
 #################################################################################
-num_iter = 10 #the lower the probability of distraction, the more particles I need
+num_iter = 1000000 #the lower the probability of distraction, the more particles I need
 #burnin = 5000 #throw out this many
-inferred_how_long_distracted, tr = MCMC_inference(num_iter, locations, time_spent_here);
+inferred_how_long_distracted, tr = MCMC_inference(num_iter, locations, time_spent_here, t_pause);
 
-g = plt.hist(inferred_how_long_distracted[Int64(num_iter/2):num_iter], 50); #burnin is half the iterations
+#g = plt.hist(inferred_how_long_distracted[Int64(num_iter/2):num_iter], 50); #burnin is half the iterations
 
 
+#################################################################################
+#making barplot
+distracted = mean(inferred_how_long_distracted[Int64(num_iter/2):num_iter])*10#speed_of_thought_factor
+sd_distracted = std(10 .* inferred_how_long_distracted[Int64(num_iter/2):num_iter])
+thinking = time_spent_here[t_pause] - distracted
+
+# bar1 = [
+#     "x" => ["shuffle model inferences"],
+#     "y" => [distracted],
+#     "name" => "Time distracted",
+#     "type" => "bar"
+# ]
+# bar2 = [
+#     "x" => ["shuffle model inferences"],
+#     "y" => [thinking],
+#     "name" => "Time thinking",
+#     "type" => "bar"
+# ]
+# data = [bar1, bar2]
+# layout = ["barmode" => "stack"]
+# response = Plotly.plot(data, ["layout" => layout, "filename" => "stacked-bar", "fileopt" => "overwrite"])
+
+
+#################################################################################
+#make output file
+outfile = string("output.csv")
+file = open(outfile, "w")
+#header
+print(file, "model_name, maze_name, pause_location, pause_time, mean_time_distracted, time_thinking, sd_time_distracted \n")
+print(file, "shuffle, ", "10_by_10_maze_2, ", locations[t_pause-1], ", ", time_spent_here[t_pause], ", ", distracted, ", ", thinking, ", ", sd_distracted, "\n")
+
+close(file)
 
 # #################################################################################
 # # # #see if I can infer x and y from deterministic thing

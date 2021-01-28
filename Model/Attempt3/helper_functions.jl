@@ -198,11 +198,8 @@ function conduct_search(current_location::Coordinate , best_location::Coordinate
         update_parent_child(to_search.location, to_search_node.children, current_node_matrix) #make sure have the right parent-child relationships
 
         if to_search.depth < depth_limit# && to_search.location != goal_location #if you're at the goal, don't add its children
-            shuffled = shuffle!(to_search_node.children)
-            # if to_search.location == Coordinate(5, 1)
-            #     println("shuffled ", shuffled)
-            # end
-            for child in shuffled#shuffle so the order isn't always the same
+            for child in homebrew_shuffle(to_search_node.children)#shuffle so the order isn't always the same
+            #for child in to_search_node.children
                 # if to_search.location == Coordinate(5, 1)
                 #     println("child ", child)
                 # end
@@ -230,3 +227,21 @@ function conduct_search(current_location::Coordinate , best_location::Coordinate
 end
 
 #################################################################################
+#function for shuffling elements of an array
+function homebrew_shuffle(a::AbstractArray)
+    n = length(a)
+    new_array = []
+    memory_array = trues(n) #index hasn't been picked yet
+
+    while length(new_array) < (n-1)
+        candidate = rand(1:n)
+        if memory_array[candidate]
+            push!(new_array, candidate)
+            memory_array[candidate] = false
+        end
+    end
+    #add the last one
+    last = findfirst(memory_array)
+    push!(new_array, last)
+    return new_array
+end
