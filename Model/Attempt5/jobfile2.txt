@@ -1,0 +1,11 @@
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 10_by_10_after
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 10_by_10_at_200
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 10_by_10_at_320
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 10_by_10_at_500
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 10_by_10_at_simple
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 10_by_10_before
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 7_by_7_at_simple
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 7_by_7_after
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 7_by_7_at_200
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 7_by_7_at_320
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl 7_by_7_before
