@@ -1,7 +1,8 @@
+#for running locally
 using Gen
 using Distributions
 #using StatsBase #I think shuffle! is from StatsBase
-#using PyPlot
+using PyPlot
 #using Plotly
 
 include("maze_generator.jl") #need to move this file into the folder
@@ -11,9 +12,9 @@ include("MCMC_inference.jl")
 
 #################################################################################
 
-Random.seed!(4);
-h = 7
-w = 7
+Random.seed!(6);
+h = 15
+w = 15
 m = maze(h,w);
 printmaze(m);
 
@@ -94,7 +95,7 @@ outfile = string("output.csv")
 file = open(outfile, "w")
 #header
 print(file, "model_name, maze_name, pause_location, pause_time, mean_time_distracted, time_thinking, sd_time_distracted \n")
-print(file, "Attempt5, ", "7_by_7_maze_6, ", locations[t_pause-1], ", ", time_spent_here[t_pause], ", ", distracted, ", ", thinking, ", ", sd_distracted, "\n")
+print(file, "Attempt5, ", "15_by_15_maze_6, ", locations[t_pause-1], ", ", time_spent_here[t_pause], ", ", distracted, ", ", thinking, ", ", sd_distracted, "\n")
 
 close(file)
 

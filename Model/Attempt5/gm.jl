@@ -32,11 +32,6 @@ end
     # println("m", m)
     # println("depth_limit", depth_limit)
 
-    # if current_location == Coordinate(5, 1)
-    #     println("depth_limit ", depth_limit)
-    #     println("current_node_matrix[5, 1] ", current_node_matrix[5, 1])
-    # end
-
     best_location = current_location
     best_val = Inf
     counter = 0#keeps track of how many places have been searched
@@ -77,7 +72,8 @@ end
     #println("current_location ", current_location)
     #println("counter ", counter)
 
-    how_long_distracted = @trace(geometric(0.02), :how_long_distracted)
+    #how_long_distracted = @trace(geometric(0.02), :how_long_distracted)
+    how_long_distracted = @trace(exponential(0.02), :how_long_distracted)
     #how_long_distracted = 0
 
     thinking_time = speed_of_thought_factor*(counter + how_long_distracted)
@@ -87,8 +83,16 @@ end
     #just to have movement_time be saved
     #@trace(uniform_discrete(movement_time, movement_time), :time_spent_here)
     sd = speed_of_thought_factor
-    time_spent_here = @trace(trunc_normal(Float64(thinking_time), Float64(sd), Float64(movement_minimum), 10000.0), :time_spent_here)
+    time_spent_here = @trace(trunc_normal(Float64(thinking_time), 10*Float64(sd), Float64(movement_minimum), 10000.0), :time_spent_here)
+    #that extra 10*sd is just to artificially increase the sd to make inference more tractible
 
+    # if current_location == Coordinate(5, 14)
+    #     println("in gm")
+    #     println("depth_limit ", depth_limit)
+    #     println("counter ", counter)
+    #     println("how_long_distracted_gm ", how_long_distracted)
+    #     println("sum ", counter + how_long_distracted)
+    # end
 
     # println("how_long_distracted ", how_long_distracted)
     # println("time_spent_here ", time_spent_here)
