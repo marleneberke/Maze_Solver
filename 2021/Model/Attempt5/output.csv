@@ -1,0 +1,2 @@
+model_name, maze_name, pause_location, pause_time, mean_time_distracted, time_thinking, sd_time_distracted 
+Attempt5, 15_by_15_maze_6, Coordinate(12, 1), 320.0, 116.81331423951043, 203.18668576048958, 78.72255632110534

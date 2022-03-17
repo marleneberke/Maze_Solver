@@ -1,0 +1,12 @@
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent1_1
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent1_2
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent1_3
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent1_4
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent1_6
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent2_3
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent2_4
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent2_5
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent3_1
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent3_3
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent3_4
+singularity exec julia_test.sif /usr/local/julia/bin/julia maze_project/execute_mcmc_inference.jl Agent3_5

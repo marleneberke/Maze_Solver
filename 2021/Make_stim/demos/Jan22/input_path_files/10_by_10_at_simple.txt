@@ -1,0 +1,58 @@
+0.0
+Coordinate(1, 1)
+60
+Coordinate(1, 2)
+60
+Coordinate(2, 2)
+60
+Coordinate(2, 1)
+60
+Coordinate(3, 1)
+60
+Coordinate(3, 2)
+60
+Coordinate(4, 2)
+60
+Coordinate(4, 1)
+60
+Coordinate(5, 1)
+60
+Coordinate(6, 1)
+60
+Coordinate(7, 1)
+60
+Coordinate(8, 1)
+60
+Coordinate(9, 1)
+60
+Coordinate(10, 1)
+60
+Coordinate(10, 2)
+60
+Coordinate(10, 3)
+60
+Coordinate(9, 3)
+60
+Coordinate(9, 4)
+60
+Coordinate(9, 5)
+60
+Coordinate(8, 5)
+60
+Coordinate(8, 6)
+60
+Coordinate(8, 7)
+60
+Coordinate(7, 7)
+60
+Coordinate(7, 8)
+60
+Coordinate(8, 8)
+60
+Coordinate(9, 8)
+60
+Coordinate(10, 8)
+320
+Coordinate(10, 9)
+60
+Coordinate(10, 10)

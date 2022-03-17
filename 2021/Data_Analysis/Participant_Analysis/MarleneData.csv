@@ -1,0 +1,165 @@
+StartDate,EndDate,Status,IPAddress,Progress,Duration (in seconds),Finished,RecordedDate,ResponseId,RecipientLastName,RecipientFirstName,RecipientEmail,ExternalReference,LocationLatitude,LocationLongitude,DistributionChannel,UserLanguage,Consent,ProlificID,Comprehension_MC,Comprehension_slider_1,Timer_First Click,Timer_Last Click,Timer_Page Submit,Timer_Click Count,Comprehension_prior_1,7_(7;1)_200_1,Q48_First Click,Q48_Last Click,Q48_Page Submit,Q48_Click Count,7_(5;1)_200_1,Q49_First Click,Q49_Last Click,Q49_Page Submit,Q49_Click Count,7_(5:1)_320_1,Q52_First Click,Q52_Last Click,Q52_Page Submit,Q52_Click Count,7_(6;3)_200_1,7_(4;1)_200_1,Q53_First Click,Q53_Last Click,Q53_Page Submit,Q53_Click Count,10_pause_at_200_1,Q55_First Click,Q55_Last Click,Q55_Page Submit,Q55_Click Count,10_pause_at_500_1,Q82_First Click,Q82_Last Click,Q82_Page Submit,Q82_Click Count,10_pause_after_1,Q57_First Click,Q57_Last Click,Q57_Page Submit,Q57_Click Count,10_pause_at_320_1,Q59_First Click,Q59_Last Click,Q59_Page Submit,Q59_Click Count,10_pause_before_1,Q61_First Click,Q61_Last Click,Q61_Page Submit,Q61_Click Count,10_pause_at_simple_1,Q63_First Click,Q63_Last Click,Q63_Page Submit,Q63_Click Count,15_(1;3)_320_1,Q66_First Click,Q66_Last Click,Q66_Page Submit,Q66_Click Count,15_(3;5)_320_1,Q67_First Click,Q67_Last Click,Q67_Page Submit,Q67_Click Count,15_(5;14)_320_1,Q69_First Click,Q69_Last Click,Q69_Page Submit,Q69_Click Count,15_(6;7)_320_1,Q70_First Click,Q70_Last Click,Q70_Page Submit,Q70_Click Count,15_(10;11)_320_1,Q71_First Click,Q71_Last Click,Q71_Page Submit,Q71_Click Count,15_(7;15)_320_1,Q73_First Click,Q73_Last Click,Q73_Page Submit,Q73_Click Count,15_(7;7)_320_1,Q74_First Click,Q74_Last Click,Q74_Page Submit,Q74_Click Count,15_(12;1)_320_1,Q75_First Click,Q75_Last Click,Q75_Page Submit,Q75_Click Count,15_(1;3)_160_1,Q77_First Click,Q77_Last Click,Q77_Page Submit,Q77_Click Count,15_(5;15)_320_1,Q78_First Click,Q78_Last Click,Q78_Page Submit,Q78_Click Count,15_(7;5)_320_1,Q79_First Click,Q79_Last Click,Q79_Page Submit,Q79_Click Count,15_(12;1)_160_1,Q80_First Click,Q80_Last Click,Q80_Page Submit,Q80_Click Count,Performance,Decision Criteria,Comments
+Start Date,End Date,Response Type,IP Address,Progress,Duration (in seconds),Finished,Recorded Date,Response ID,Recipient Last Name,Recipient First Name,Recipient Email,External Data Reference,Location Latitude,Location Longitude,Distribution Channel,User Language,"Informed Consent FormPurposeWe are conducting research on thinking. ProceduresThis experiment takes around 20 minutes to complete. You will watch a character solve a maze and answer questions about why you think they paused at different points along the maze. You will receive $4 upon completing the experiment. Risks and BenefitsCompleting this task poses no more risk of harm to you than do the experiences of everyday life (e.g., from working on a computer). Although this study will not benefit you personally, it will contribute to the advancement of our understanding of human reasoning.ConfidentialityAll of the responses you provide during this study will be anonymous. You will not be asked to provide any identifying information, such as your name, in any of the questionnaires. Typically, only the researchers involved in this study and those responsible for research oversight will have access to the information you provide. However, we may also share the data with other researchers so that they can check the accuracy of our conclusions; this will not impact you because the data are anonymous. The researcher will not know your name, and no identifying information will be connected to your survey answers in any way. The survey is therefore anonymous. However, your account is associated with a Prolific ID that the researcher has to be able to see in order to pay you, and in some cases these numbers are associated with public profiles which could, in theory, be searched. For this reason, though the researcher will not be looking at anyone’s public profiles, the fact of your participation in the research (as opposed to your actual survey responses) is technically considered confidential rather than truly anonymous. Voluntary Participation Your participation in this study is voluntary. You are free to decline to participate, to end your participation at any time for any reason, or to refuse to answer any individual question. QuestionsIf you have any questions about this study, you may contact Julian Jara-Ettinger at julian.jara-ettinger@yale.edu. If you would like to talk with someone other than the researchers to discuss problems or concerns, to discuss situations in the event that a member of the research team is not available, or to discuss your rights as a research participant, you may contact the Yale Human Subjects Committee below, and mention HSC number 2000020357:  Yale University Human Subjects Committee Box 208010, New Haven, CT 06520-8010 (203) 785-4688; human.subjects@yale.edu  Additional information is available  here  Agreement to participateBy clicking the button, you acknowledge that you have read the above information, and agree to participate in the study. You must be at least 18 years of age to participate; agreeing to participate confirms you are 18 years of age or older. Select the ""Yes"" option to confirm your agreement and continue.",Please enter your Prolific ID:,Select all of the possible reasons why someone might pause:,"You will use the slider to indicate how much of the pause was due to thinking or distractions. If you think they were thinking the whole time, move the slider all the way to the left. If you think they were distracted the whole time, move the slider all the way to the right. If you are unsure, leave it somewhere in the middle.
+
+If you believe that the person was distracted for the whole pause, where would you put the slider? - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"This video is giving you information that will help you in your task. Please watch this video carefully. In this video, the person solving the maze only ever pauses to think about the maze -- they never get distracted. This is what it looks like when a person solves the maze without any distraction.
+
+
+
+Note: the top left is always the start of the maze, and the bottom right is always the end.
+
+
+
+
+
+
+
+
+Please use the slider to indicate how much of each pause was due to thinking vs distraction. - Please adjust the slider to respond","Here's a video of someone else solving a different maze. Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond","Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause here?
+
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause here?
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause here?
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause here?
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause?
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,"Why did they pause here?
+
+
+
+
+
+
+Because they were... - Please adjust the slider to respond",Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,How well do you think you did? (how often do you think you were right?),How did you decide whether the person was distracted or thinking?,Any comments / thoughts you'd like to share?
+"{""ImportId"":""startDate"",""timeZone"":""America/Denver""}","{""ImportId"":""endDate"",""timeZone"":""America/Denver""}","{""ImportId"":""status""}","{""ImportId"":""ipAddress""}","{""ImportId"":""progress""}","{""ImportId"":""duration""}","{""ImportId"":""finished""}","{""ImportId"":""recordedDate"",""timeZone"":""America/Denver""}","{""ImportId"":""_recordId""}","{""ImportId"":""recipientLastName""}","{""ImportId"":""recipientFirstName""}","{""ImportId"":""recipientEmail""}","{""ImportId"":""externalDataReference""}","{""ImportId"":""locationLatitude""}","{""ImportId"":""locationLongitude""}","{""ImportId"":""distributionChannel""}","{""ImportId"":""userLanguage""}","{""ImportId"":""QID42""}","{""ImportId"":""QID41_TEXT""}","{""ImportId"":""QID4""}","{""ImportId"":""QID1_1""}","{""ImportId"":""QID50_FIRST_CLICK""}","{""ImportId"":""QID50_LAST_CLICK""}","{""ImportId"":""QID50_PAGE_SUBMIT""}","{""ImportId"":""QID50_CLICK_COUNT""}","{""ImportId"":""QID40_1""}","{""ImportId"":""QID39_1""}","{""ImportId"":""QID48_FIRST_CLICK""}","{""ImportId"":""QID48_LAST_CLICK""}","{""ImportId"":""QID48_PAGE_SUBMIT""}","{""ImportId"":""QID48_CLICK_COUNT""}","{""ImportId"":""QID31_1""}","{""ImportId"":""QID49_FIRST_CLICK""}","{""ImportId"":""QID49_LAST_CLICK""}","{""ImportId"":""QID49_PAGE_SUBMIT""}","{""ImportId"":""QID49_CLICK_COUNT""}","{""ImportId"":""QID32_1""}","{""ImportId"":""QID52_FIRST_CLICK""}","{""ImportId"":""QID52_LAST_CLICK""}","{""ImportId"":""QID52_PAGE_SUBMIT""}","{""ImportId"":""QID52_CLICK_COUNT""}","{""ImportId"":""QID33_1""}","{""ImportId"":""QID29_1""}","{""ImportId"":""QID53_FIRST_CLICK""}","{""ImportId"":""QID53_LAST_CLICK""}","{""ImportId"":""QID53_PAGE_SUBMIT""}","{""ImportId"":""QID53_CLICK_COUNT""}","{""ImportId"":""QID56_1""}","{""ImportId"":""QID55_FIRST_CLICK""}","{""ImportId"":""QID55_LAST_CLICK""}","{""ImportId"":""QID55_PAGE_SUBMIT""}","{""ImportId"":""QID55_CLICK_COUNT""}","{""ImportId"":""QID60_1""}","{""ImportId"":""QID82_FIRST_CLICK""}","{""ImportId"":""QID82_LAST_CLICK""}","{""ImportId"":""QID82_PAGE_SUBMIT""}","{""ImportId"":""QID82_CLICK_COUNT""}","{""ImportId"":""QID54_1""}","{""ImportId"":""QID57_FIRST_CLICK""}","{""ImportId"":""QID57_LAST_CLICK""}","{""ImportId"":""QID57_PAGE_SUBMIT""}","{""ImportId"":""QID57_CLICK_COUNT""}","{""ImportId"":""QID58_1""}","{""ImportId"":""QID59_FIRST_CLICK""}","{""ImportId"":""QID59_LAST_CLICK""}","{""ImportId"":""QID59_PAGE_SUBMIT""}","{""ImportId"":""QID59_CLICK_COUNT""}","{""ImportId"":""QID64_1""}","{""ImportId"":""QID61_FIRST_CLICK""}","{""ImportId"":""QID61_LAST_CLICK""}","{""ImportId"":""QID61_PAGE_SUBMIT""}","{""ImportId"":""QID61_CLICK_COUNT""}","{""ImportId"":""QID62_1""}","{""ImportId"":""QID63_FIRST_CLICK""}","{""ImportId"":""QID63_LAST_CLICK""}","{""ImportId"":""QID63_PAGE_SUBMIT""}","{""ImportId"":""QID63_CLICK_COUNT""}","{""ImportId"":""QID13_1""}","{""ImportId"":""QID66_FIRST_CLICK""}","{""ImportId"":""QID66_LAST_CLICK""}","{""ImportId"":""QID66_PAGE_SUBMIT""}","{""ImportId"":""QID66_CLICK_COUNT""}","{""ImportId"":""QID14_1""}","{""ImportId"":""QID67_FIRST_CLICK""}","{""ImportId"":""QID67_LAST_CLICK""}","{""ImportId"":""QID67_PAGE_SUBMIT""}","{""ImportId"":""QID67_CLICK_COUNT""}","{""ImportId"":""QID15_1""}","{""ImportId"":""QID69_FIRST_CLICK""}","{""ImportId"":""QID69_LAST_CLICK""}","{""ImportId"":""QID69_PAGE_SUBMIT""}","{""ImportId"":""QID69_CLICK_COUNT""}","{""ImportId"":""QID16_1""}","{""ImportId"":""QID70_FIRST_CLICK""}","{""ImportId"":""QID70_LAST_CLICK""}","{""ImportId"":""QID70_PAGE_SUBMIT""}","{""ImportId"":""QID70_CLICK_COUNT""}","{""ImportId"":""QID17_1""}","{""ImportId"":""QID71_FIRST_CLICK""}","{""ImportId"":""QID71_LAST_CLICK""}","{""ImportId"":""QID71_PAGE_SUBMIT""}","{""ImportId"":""QID71_CLICK_COUNT""}","{""ImportId"":""QID18_1""}","{""ImportId"":""QID73_FIRST_CLICK""}","{""ImportId"":""QID73_LAST_CLICK""}","{""ImportId"":""QID73_PAGE_SUBMIT""}","{""ImportId"":""QID73_CLICK_COUNT""}","{""ImportId"":""QID20_1""}","{""ImportId"":""QID74_FIRST_CLICK""}","{""ImportId"":""QID74_LAST_CLICK""}","{""ImportId"":""QID74_PAGE_SUBMIT""}","{""ImportId"":""QID74_CLICK_COUNT""}","{""ImportId"":""QID21_1""}","{""ImportId"":""QID75_FIRST_CLICK""}","{""ImportId"":""QID75_LAST_CLICK""}","{""ImportId"":""QID75_PAGE_SUBMIT""}","{""ImportId"":""QID75_CLICK_COUNT""}","{""ImportId"":""QID23_1""}","{""ImportId"":""QID77_FIRST_CLICK""}","{""ImportId"":""QID77_LAST_CLICK""}","{""ImportId"":""QID77_PAGE_SUBMIT""}","{""ImportId"":""QID77_CLICK_COUNT""}","{""ImportId"":""QID25_1""}","{""ImportId"":""QID78_FIRST_CLICK""}","{""ImportId"":""QID78_LAST_CLICK""}","{""ImportId"":""QID78_PAGE_SUBMIT""}","{""ImportId"":""QID78_CLICK_COUNT""}","{""ImportId"":""QID26_1""}","{""ImportId"":""QID79_FIRST_CLICK""}","{""ImportId"":""QID79_LAST_CLICK""}","{""ImportId"":""QID79_PAGE_SUBMIT""}","{""ImportId"":""QID79_CLICK_COUNT""}","{""ImportId"":""QID27_1""}","{""ImportId"":""QID80_FIRST_CLICK""}","{""ImportId"":""QID80_LAST_CLICK""}","{""ImportId"":""QID80_PAGE_SUBMIT""}","{""ImportId"":""QID80_CLICK_COUNT""}","{""ImportId"":""QID7_TEXT""}","{""ImportId"":""QID8_TEXT""}","{""ImportId"":""QID9_TEXT""}"
+2021-01-28 18:28:47,2021-01-28 18:33:48,Survey Preview,,100,301,True,2021-01-28 18:33:49,R_r29xlZsbOHnH1fj,,,,,41.318603515625,-72.93019866943359375,preview,EN,Yes,mdb,,54,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2021-01-28 19:15:06,2021-01-28 19:29:43,Survey Preview,,100,877,True,2021-01-28 19:29:44,R_1lp0RSbW3QJOtYL,,,,,41.318603515625,-72.93019866943359375,preview,EN,Yes,mdb,To think about how to solve the maze and/or because they got distracted,100,16.741,69.873,93.794,4,0,62,11.78,13.286,15.897,2,37,11.757,12.952,17.014,2,24,11.563,12.415,13.737,2,65,35,12.026,12.026,13.226,1,39,8.013,9.539,11.288,2,27,9.859,9.859,11.178,1,43,62.345,62.345,66.098,1,27,10.292,10.292,11.376,1,33,9.389,9.389,11.07,1,68,14.044,14.044,15.518,1,28,9.818,9.818,10.622,1,68,9.613,9.613,11.163,1,24,72.931,72.931,74.145,1,19,24.505,24.505,25.611,1,23,40.359,40.359,41.744,1,66,14.486,14.486,17.875,1,26,11.703,11.703,12.756,1,36,19.292,19.292,21.873,1,29,12.579,12.579,13.809,1,38,10.306,10.306,12.589,1,37,49.028,49.028,50.112,1,34,10.703,10.703,11.701,1,,,
+2021-01-29 07:58:00,2021-01-29 08:06:18,Survey Preview,,100,497,True,2021-01-29 08:06:18,R_1geAU0ulWBlvyGK,,,,,41.318603515625,-72.93019866943359375,preview,EN,Yes,marlene,To think about how to solve the maze and/or because they got distracted,100,68.172,68.172,71.601,1,0,79,12.935,15.025,15.731,2,18,10.672,15.739,16.963,5,32,10.765,10.765,12.113,1,78,40,7.996,14.701,15.715,3,9,8.068,9.791,10.998,3,46,24.444,24.444,25.555,1,58,12.14,12.14,16.089,1,73,10.408,10.408,11.559,1,39,10,10,11.104,1,46,12.645,16.218,17.028,2,61,9.514,9.514,10.525,1,56,12.612,12.612,13.716,1,66,10.892,10.892,13.447,1,15,14.147,14.147,15.303,1,26,9.307,9.307,10.79,1,81,7.921,9.106,10.911,2,33,15.435,15.435,16.934,1,33,12.322,12.322,13.418,1,52,7.934,8.853,10.713,2,43,9.357,9.357,10.832,1,72,7.421,10.084,11.101,4,60,7.862,7.862,11.126,1,wasn't trying,meh,
