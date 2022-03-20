@@ -1,4 +1,4 @@
-include("gm.jl")
+using PuzzleSolver
 
 # trace, _ = generate(gm, (10,))
 # display(get_choices(trace))
