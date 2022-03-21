@@ -1,5 +1,5 @@
-using PuzzleSolver
 using Gen
+using PuzzleSolver
 
 puzzle = ["S" 1 2 5; 1 0 0 1; 3 2 5 "F"]
 correct_path = [CartesianIndex(1, 1), CartesianIndex(2, 1), CartesianIndex(3, 1), CartesianIndex(3, 2), CartesianIndex(3, 3)]

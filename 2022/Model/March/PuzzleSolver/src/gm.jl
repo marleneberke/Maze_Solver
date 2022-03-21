@@ -35,7 +35,7 @@ end
         up = puzzle[possible_path[i]] < puzzle[possible_path[i+1]]
         down = puzzle[possible_path[i]] > puzzle[possible_path[i+1]]
         rule_not_broken = (previous_down && up) || (previous_up && down)
-        thinking_mistake = @trace(bernoulli(params.p_thinking_mistake), :(thinking_mistake, i))
+        thinking_mistake = @trace(bernoulli(params.p_thinking_mistake), :thinking_mistake => i)
         rule_not_broken = thinking_mistake ? !rule_not_broken : rule_not_broken #if there's a thinking mistake, flip the evaluation
         i = i + 1
         previous_up = up
@@ -50,7 +50,7 @@ end
 #amount of time it took to think
 @gen function evaluate(path_to_check::Int64, state::State, params::Params, puzzle::Matrix{Any})
     possible_path = state.possible_paths[path_to_check]
-    works, evals_until_end = evaluate_rule(possible_path, puzzle, params)
+    works, evals_until_end = @trace(evaluate_rule(possible_path, puzzle, params), :evaluate_rule)
     println("evals_until_end ", evals_until_end)
 
     thinking_units_used = state.thinking_units_used + evals_until_end
@@ -107,7 +107,24 @@ Gen.load_generated_functions()
     println("init_state ", init_state)
     states = @trace(chain(max, init_state, params, puzzle), :chain)
 
-    chosen_path = @trace(choose_path_distribution(push!(paths, []), states[end].possible_paths, params.p_mistake_action_level), :chosen_path)
+    #chosen_path = @trace(choose_path_distribution(push!(paths, []), states[end].possible_paths, params.p_mistake_action_level), :chosen_path)
+    #write the categorical version for now (so as to keep moving forward)
+    paths = push!(paths, [])
+    desired_path = states[end].possible_paths[1]
+    println(paths)
+    println(desired_path)
+    desired_index = findall(x -> x==desired_path, paths)[1]
+    n_options = length(paths)
+    if n_options==1
+        ps = fill(1., 1)
+    else
+        ps = fill(params.p_mistake_action_level/(n_options-1), n_options)
+        ps[desired_index] = 1-params.p_mistake_action_level
+    end
+    chosen_path = @trace(categorical(ps), :categorical_path)
+    println(paths[chosen_path])
+
+    #test = @trace(trunc_normal(1., 1, 0., 2.), :test)
 
     time_distracted = @trace(exponential(params.lambda_distracted), :time_distracted)
     time_per_unit_think = @trace(normal(params.mu_time_per_unit_think, params.sd_time_per_unit_think), :time_per_unit_think)
