@@ -43,6 +43,8 @@ has_argument_grads(::Choose_Path_Distribution) = (false,)
 export choose_path_distribution
 
 ##############################################################################################
+using Distributions
+
 #TruncatedNormal
 export trunc_normal
 

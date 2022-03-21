@@ -1,3 +1,10 @@
+Base.@kwdef struct Puzzle_Args
+    paths::Vector{Any}
+    costs::Vector{Int64}
+    puzzle::Matrix{Any}
+    correct_path::Vector{CartesianIndex{2}}
+end
+
 Base.@kwdef struct State
     possible_paths::Vector{Any}
     estimated_costs::Vector{Int64}
@@ -15,6 +22,9 @@ Base.@kwdef struct Params #assuming p_guessing and p_already knew can't both the
     p_mistake_action_level::Float64 = 0.00001
     p_thinking_mistake = 0.05
 end
+
+export Puzzle_Args
+export Params
 
 #Evaluate if a possible path follows the up-down rule.
 #Return how many comparisons were needed to assess if it follows the rule.
@@ -51,7 +61,7 @@ end
 @gen function evaluate(path_to_check::Int64, state::State, params::Params, puzzle::Matrix{Any})
     possible_path = state.possible_paths[path_to_check]
     works, evals_until_end = @trace(evaluate_rule(possible_path, puzzle, params), :evaluate_rule)
-    println("evals_until_end ", evals_until_end)
+    #println("evals_until_end ", evals_until_end)
 
     thinking_units_used = state.thinking_units_used + evals_until_end
 
@@ -86,7 +96,7 @@ end
     # end
 
     ps = softmax(state.estimated_costs, params.tau_softmax)
-    println("ps ", ps)
+    #println("ps ", ps)
     path_to_check = @trace(categorical(ps), :path_to_check)
 
     next_state = @trace(evaluate(path_to_check, state, params, puzzle), :evaluation)
@@ -97,32 +107,34 @@ end
 chain = Gen.Unfold(kernel)
 Gen.load_generated_functions()
 
-@gen function gm(max::Int64, paths::Vector{Any}, costs::Vector{Int64}, params::Params, puzzle::Matrix{Any}, correct_path::Vector{CartesianIndex{2}})
+@gen function gm(max::Int64, params::Params, puzzle_args::Puzzle_Args)
+    puzzle_args = deepcopy(puzzle_args)
+
     already_knew = @trace(bernoulli(params.p_already_knew), :already_knew)
-    init_state = already_knew ? State(correct_path, costs, 0, true) : State(paths, costs, 0, false)
+    init_state = already_knew ? State(puzzle_args.correct_path, puzzle_args.costs, 0, true) : State(puzzle_args.paths, puzzle_args.costs, 0, false)
 
     guessing = @trace(bernoulli(params.p_guessing), :guessing)
-    init_state = guessing ? State(rand(paths), costs, 0, true) : State(paths, costs, 0, false)
+    init_state = guessing ? State(rand(puzzle_args.paths), puzzle_args.costs, 0, true) : State(puzzle_args.paths, puzzle_args.costs, 0, false)
 
-    println("init_state ", init_state)
-    states = @trace(chain(max, init_state, params, puzzle), :chain)
+    #println("init_state ", init_state)
+    states = @trace(chain(max, init_state, params, puzzle_args.puzzle), :chain)
 
-    #chosen_path = @trace(choose_path_distribution(push!(paths, []), states[end].possible_paths, params.p_mistake_action_level), :chosen_path)
-    #write the categorical version for now (so as to keep moving forward)
-    paths = push!(paths, [])
-    desired_path = states[end].possible_paths[1]
-    println(paths)
-    println(desired_path)
-    desired_index = findall(x -> x==desired_path, paths)[1]
-    n_options = length(paths)
-    if n_options==1
-        ps = fill(1., 1)
-    else
-        ps = fill(params.p_mistake_action_level/(n_options-1), n_options)
-        ps[desired_index] = 1-params.p_mistake_action_level
-    end
-    chosen_path = @trace(categorical(ps), :categorical_path)
-    println(paths[chosen_path])
+    # #chosen_path = @trace(choose_path_distribution(push!(paths, []), states[end].possible_paths, params.p_mistake_action_level), :chosen_path)
+    # #write the categorical version for now (so as to keep moving forward)
+    # paths = push!(paths, [])
+    # desired_path = states[end].possible_paths[1]
+    # println(paths)
+    # println(desired_path)
+    # desired_index = findall(x -> x==desired_path, paths)[1]
+    # n_options = length(paths)
+    # if n_options==1
+    #     ps = fill(1., 1)
+    # else
+    #     ps = fill(params.p_mistake_action_level/(n_options-1), n_options)
+    #     ps[desired_index] = 1-params.p_mistake_action_level
+    # end
+    # chosen_path = @trace(categorical(ps), :categorical_path)
+    # println(paths[chosen_path])
 
     #test = @trace(trunc_normal(1., 1, 0., 2.), :test)
 
@@ -131,3 +143,5 @@ Gen.load_generated_functions()
     total_time = @trace(normal((states[end].thinking_units_used*time_per_unit_think + time_distracted), params.sd_time_per_unit_think), :total_time)
     return states
 end
+
+export gm

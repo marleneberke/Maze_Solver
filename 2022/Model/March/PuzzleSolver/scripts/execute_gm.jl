@@ -8,7 +8,10 @@ paths = PuzzleSolver.get_paths(puzzle) #not sure why I have to name the package.
 println(paths)
 lengths = map(x -> length(x), paths)
 
+puzzle_args = Puzzle_Args(paths, lengths, puzzle, correct_path)
+
 params = PuzzleSolver.Params()
-(trace, _) = Gen.generate(PuzzleSolver.gm, (10, paths, lengths, params, puzzle, correct_path))
+
+(trace, _) = Gen.generate(PuzzleSolver.gm, (10, params, puzzle_args))
 display(get_choices(trace))
 get_retval(trace)[end]
