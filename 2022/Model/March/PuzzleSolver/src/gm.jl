@@ -16,6 +16,7 @@ Base.@kwdef struct Params #assuming p_guessing and p_already knew can't both the
     tau_softmax::Float64 = 0.5 #tau = 0 means perfectly rational
     mu_time_per_unit_think::Float64 = 100.
     sd_time_per_unit_think::Float64 = 1.
+    p_distracted::Float64 = 0.00001
     lambda_distracted::Float64 = 10000. #bigger means less often distracted
     p_already_knew::Float64 = 0.00001
     p_guessing::Float64 = 0.00001
@@ -116,6 +117,9 @@ Gen.load_generated_functions()
     guessing = @trace(bernoulli(params.p_guessing), :guessing)
     init_state = guessing ? State(rand(puzzle_args.paths), puzzle_args.costs, 0, true) : State(puzzle_args.paths, puzzle_args.costs, 0, false)
 
+    distracted = @trace(bernoulli(params.p_distracted), :distracted) #if distracted, guess, don't think
+    init_state = distracted ? State(rand(puzzle_args.paths), puzzle_args.costs, 0, true) : State(puzzle_args.paths, puzzle_args.costs, 0, false)
+
     #println("init_state ", init_state)
     states = @trace(chain(max, init_state, params, puzzle_args.puzzle), :chain)
 
@@ -138,9 +142,13 @@ Gen.load_generated_functions()
 
     #test = @trace(trunc_normal(1., 1, 0., 2.), :test)
 
-    time_distracted = @trace(exponential(params.lambda_distracted), :time_distracted)
+    #time_distracted = @trace(exponential(params.lambda_distracted), :time_distracted)
     time_per_unit_think = @trace(normal(params.mu_time_per_unit_think, params.sd_time_per_unit_think), :time_per_unit_think)
-    total_time = @trace(normal((states[end].thinking_units_used*time_per_unit_think + time_distracted), params.sd_time_per_unit_think), :total_time)
+
+    total_time = distracted ?
+        @trace(exponential(params.lambda_distracted), :total_time) :
+        @trace(normal((states[end].thinking_units_used*time_per_unit_think), params.sd_time_per_unit_think), :total_time)
+
     return states
 end
 
