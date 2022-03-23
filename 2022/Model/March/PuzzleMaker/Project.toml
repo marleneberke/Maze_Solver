@@ -1,0 +1,7 @@
+name = "PuzzleMaker"
+uuid = "696c54e8-ba75-47e6-91bb-15601d3c0f85"
+authors = ["mdb293 <mdb293@cornell.edu>"]
+version = "0.1.0"
+
+[deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
