@@ -8,7 +8,7 @@ function get_paths(puzzle::Matrix{Any})
     DFS(puzzle, visited, paths, start)
     return paths
 end
-
+export get_paths
 
 function DFS(puzzle::Matrix{Any}, visited::Vector{Any}, paths::Vector{Any}, current_place::CartesianIndex{2})
     visited = deepcopy(visited)

@@ -1,7 +1,9 @@
 module PuzzleMaker
 
 using Distributions
+#using Random
+using PuzzleSolver
 
-greet() = print("Hello World!")
+include("generate_puzzle.jl")
 
 end # module

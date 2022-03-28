@@ -62,8 +62,6 @@ end
 @gen function evaluate(path_to_check::Int64, state::State, params::Params, puzzle::Matrix{Any})
     possible_path = state.possible_paths[path_to_check]
     works, evals_until_end = @trace(evaluate_rule(possible_path, puzzle, params), :evaluate_rule)
-    #println("evals_until_end ", evals_until_end)
-
     thinking_units_used = state.thinking_units_used + evals_until_end
 
     if works
