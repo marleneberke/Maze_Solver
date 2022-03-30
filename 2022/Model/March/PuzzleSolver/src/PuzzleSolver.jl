@@ -7,6 +7,7 @@ using Gen
 #import PyPlot; const plt = PyPlot
 
 include("custom_distributions.jl")
+include("structs.jl")
 include("parse_puzzle_and_helpers.jl")
 include("gm.jl")
 

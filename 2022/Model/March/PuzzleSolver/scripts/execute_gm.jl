@@ -1,16 +1,18 @@
 using Gen
 using PuzzleSolver
+using Random
 
-puzzle = ["S" 1 2 5; 1 0 0 1; 3 2 5 "F"]
-correct_path = [CartesianIndex(1, 1), CartesianIndex(2, 1), CartesianIndex(3, 1), CartesianIndex(3, 2), CartesianIndex(3, 3)]
+Random.seed!(1)
+
+puzzle = ["S" 6 4 0 1 5 2; 1 0 7 0 4 0 7; 3 4 1 8 2 1 "F"]
+correct_path = [CartesianIndex(2, 1), CartesianIndex(3, 1), CartesianIndex(3, 2), CartesianIndex(3, 3)]
 display(puzzle)
 paths = PuzzleSolver.get_paths(puzzle) #not sure why I have to name the package. Seems I didn't have to do this with MetaGen
-println(paths)
-lengths = map(x -> length(x), paths)
+#lengths = map(x -> length(x), paths)
 
-puzzle_args = Puzzle_Args(paths, lengths, puzzle, correct_path)
+puzzle_args = Puzzle_Args(paths, puzzle, correct_path)
 
-params = PuzzleSolver.Params()
+params = PuzzleSolver.Params(p_thinking_mistake = 0.)
 
 (trace, _) = Gen.generate(PuzzleSolver.gm, (10, params, puzzle_args))
 display(get_choices(trace))
